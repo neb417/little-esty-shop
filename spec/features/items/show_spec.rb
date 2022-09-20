@@ -26,11 +26,11 @@ RSpec.describe 'Merchant Item Show Page: ' do
 
         click_link "#{@item2.name}"
 
-        expect(current_path).to eq(item_path(@item2.id))
+        expect(current_path).to eq(merchant_item_path(@merch1.id, @item2.id))
       end
 
       it 'item show page lists item attributes' do
-        visit item_path(@item1.id)
+        visit merchant_item_path(@merch1.id, @item1.id)
 
         expect(page).to have_content(@item1.name)
         expect(page).to have_content(@item1.description)
@@ -43,7 +43,7 @@ RSpec.describe 'Merchant Item Show Page: ' do
       end
 
       it 'there is a link to update the item information' do
-        visit item_path(@item4.id)
+        visit merchant_item_path(@merch2.id, @item4.id)
 
         expect(page).to have_link("Update #{@item4.name}")
       end

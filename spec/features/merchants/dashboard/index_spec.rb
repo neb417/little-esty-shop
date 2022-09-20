@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Merchant Dashboard Index' do
   before :each do
     @merchant = create(:merchant)
-    visit merchant_dashboard_index_path(@merchant.id)
+    visit merchant_dashboard_path(@merchant.id)
   end
 
   it 'lists the merchant name' do
@@ -52,7 +52,7 @@ RSpec.describe 'Merchant Dashboard Index' do
     transaction_4 = create(:transaction, invoice: invoice_4, result: :success)
     transaction_5 = create(:transaction, invoice: invoice_5, result: :success)
 
-    visit merchant_dashboard_index_path(@merchant.id)
+    visit merchant_dashboard_path(@merchant.id)
 
     top_five_1 = @merchant.top_five_customers[0]
     top_five_2 = @merchant.top_five_customers[1]
@@ -101,7 +101,7 @@ RSpec.describe 'Merchant Dashboard Index' do
       expect(page).to have_content("Items Ready to Ship")
       
       @merchant.inv_items_ready_to_ship.each do |inv_item|
-        visit(merchant_dashboard_index_path(@merchant.id))
+        visit(merchant_dashboard_path(@merchant.id))
         within ("li#item_ready_#{inv_item.id}")  do
           expect(page).to have_content("#{inv_item.item_name} - Invoice ##{inv_item.invoice_id} - #{inv_item.invoice_date.strftime("%A, %B %-d, %Y")}")
           expect(page).to have_link("#{inv_item.invoice_id}")
