@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  resources :merchants, only: [:show] do
+  resources :merchants, only:[] do
     get '/dashboard', to: 'merchants#show', as: :dashboard
     resources :items, except: [:destroy]
     resources :invoices, only: [:index, :show]
@@ -11,8 +11,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get '/', to: 'dashboard#index'
-    resources :items
-    resources :invoices
-    resources :merchants
+    resources :merchants, except: [:destroy]
   end
 end
