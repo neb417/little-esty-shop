@@ -40,7 +40,13 @@ class Merchant < ApplicationRecord
     .where('result = ?', 1)
     .select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
     .group(:id).order('total_revenue desc').limit(5)
+  end
 
-
+  def top_day
+    invoices.select('invoices.created_at, sum(invoice_items.quantity * invoice_items.unit_price) as revenue')
+    .group('invoices.created_at')
+    .order('revenue desc')
+    .first
+    .created_at
   end
 end
