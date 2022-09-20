@@ -31,19 +31,4 @@ RSpec.describe Customer, type: :model do
       expect(Customer.top_customers).to eq([customer1, customer2, customer3, customer4, customer5])
     end
   end
-
-  describe 'instance methods' do
-
-    it 'shows number of transactions' do
-      customer = Customer.create!(first_name: 'Gunther', last_name: 'Guyman')
-
-      invoice1 = Invoice.create!(customer_id: customer.id, status: 2)
-      invoice2 = Invoice.create!(customer_id: customer.id, status: 2)
-
-      transaction1 = Transaction.create!(invoice_id: invoice1.id, credit_card_number: 12345, result: 1)
-      transaction2 = Transaction.create!(invoice_id: invoice2.id, credit_card_number: 12345, result: 1)
-
-      expect(customer.number_of_transactions).to eq(2)
-    end
-  end
 end
