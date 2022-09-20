@@ -31,6 +31,22 @@ class ItemsController < ApplicationController
     end
   end
 
+  def new
+    @merchant = Merchant.find(params[:merchant_id])
+  end
+
+  def create
+    item = Item.new(strong_params)
+
+    if item.save
+      redirect_to merchant_items_path(params[:merchant_id])
+      flash[:success] = "#{item.name} has been successfully created."
+    else
+      flash[:error] = "Entry is invalid. Please fill in all entries with valid information."
+      redirect_to new_merchant_item_path(params[:merchant_id])
+    end
+  end
+
   private
 
   def item_params
