@@ -73,6 +73,42 @@ RSpec.describe 'Merchant Item Update Page: ' do
 
         expect(page).to have_content("New Name has been successfully updated.")
       end
+
+      it 'I see a flash message stating that the information has been successfully updated' do
+        visit edit_merchant_item_path(@merch2.id, @item5.id)
+
+        fill_in "Update Name:", with: 'New Name'
+        fill_in "Update Description:", with: 'Description new'
+        fill_in "Update Unit Price:", with: "Sweet, sweet bread"
+
+        click_button "Submit Changes"
+
+        expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
+      end
+
+      it 'I see a flash message stating that the information has been successfully updated' do
+        visit edit_merchant_item_path(@merch2.id, @item5.id)
+
+        fill_in "Update Name:", with: ''
+        fill_in "Update Description:", with: 'Description new'
+        fill_in "Update Unit Price:", with: "Sweet, sweet bread"
+
+        click_button "Submit Changes"
+
+        expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
+      end
+
+      it 'I see a flash message stating that the information has been successfully updated' do
+        visit edit_merchant_item_path(@merch2.id, @item5.id)
+
+        fill_in "Update Name:", with: 'Something New'
+        fill_in "Update Description:", with: ''
+        fill_in "Update Unit Price:", with: "Sweet, sweet bread"
+
+        click_button "Submit Changes"
+
+        expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
+      end
     end
   end
 end

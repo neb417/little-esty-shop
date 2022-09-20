@@ -64,6 +64,41 @@ RSpec.describe 'Merchant New Item page' do
           expect(page).to have_link('Gadget')
         end
       end
+
+      it 'has sad path for name' do
+        visit (new_merchant_item_path(@merch1.id))
+
+        fill_in 'Enter Item Description', with: 'Does a thing'
+        fill_in 'Enter Item Price', with: '42.95'
+
+        click_button 'Submit'
+
+        expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information.")
+        # expect(error).to match[/Entry is invalid. Please fill in all entries with valid information*/]
+      end
+
+      it 'has sad path for description' do
+        visit (new_merchant_item_path(@merch1.id))
+
+        fill_in 'Enter Item Name', with: 'Gadget'
+        fill_in 'Enter Item Price', with: '42.95'
+
+        click_button 'Submit'
+
+        expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
+      end
+
+      it 'has sad path for unit_price' do
+        visit (new_merchant_item_path(@merch1.id))
+
+        fill_in 'Enter Item Name', with: 'Gadget'
+        fill_in 'Enter Item Description', with: 'Does a thing'
+        fill_in 'Enter Item Price', with: 'forty dollars'
+
+        click_button 'Submit'
+
+        expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
+      end
     end
   end
 end

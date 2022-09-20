@@ -5,6 +5,23 @@ RSpec.describe Item, type: :model do
     it {should belong_to(:merchant)}
   end
 
+  describe 'validations' do
+    it 'validates name' do
+      should validate_presence_of(:name)
+        .with_message('Please add a Name for the item.')
+    end
+
+    it 'validates name' do
+      should validate_presence_of(:description)
+        .with_message('Please add a description of the item.')
+    end
+
+    it 'validates name' do
+      should validate_presence_of(:unit_price)
+        .with_message('Price is not valid')
+    end
+  end
+
   before(:each) do
     @merch1 = create(:merchant)
     @item1 = create(:item, merchant: @merch1, unit_price: 5700)
@@ -50,7 +67,6 @@ RSpec.describe Item, type: :model do
 
   describe 'instance methods' do
     it '.top_revenue_date' do
-      # binding.pry
       expect(@item3.top_revenue_date).to eq(@invoice3.created_at)
     end
   end
