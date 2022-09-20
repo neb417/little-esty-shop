@@ -212,7 +212,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
             click_link @item8.name
           end
 
-          expect(current_path).to eq(merchant_item_path(@merch2.id, @item8.id))
+          expect(current_path).to eq(item_path(@item8.id))
         end
 
         it 'total revenue for item is displayed' do
