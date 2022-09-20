@@ -1,4 +1,4 @@
-class MerchantItemsController < ApplicationController
+class ItemsController < ApplicationController
 
   def index
     @merchant = Merchant.find(params[:merchant_id])
@@ -7,28 +7,27 @@ class MerchantItemsController < ApplicationController
   end
 
   def show
-    @merchant = Merchant.find(params[:merchant_id])
     @item = Item.find(params[:id])
+    @merchant = Merchant.find(@item.merchant_id)
   end
 
   def edit
-    @merchant = Merchant.find(params[:merchant_id])
     @item = Item.find(params[:id])
+    @merchant = Merchant.find(@item.merchant_id)
   end
 
   def update
-    merchant = Merchant.find(params[:merchant_id])
-    item = Item.find(params[:id])
-
+    @item = Item.find(params[:id])
+    merchant = Merchant.find(@item.merchant_id)
     if params.has_key?(:status)
-      item.update(item_params)
+      @item.update(strong_params)
       redirect_to merchant_items_path(merchant.id)
-    elsif item.update(item_params)
-      flash[:success] = "#{item.name} has been successfully updated."
-      redirect_to merchant_item_path(merchant.id, item.id)
+    elsif @item.update(item_params)
+      flash[:success] = "#{@item.name} has been successfully updated."
+      redirect_to item_path(@item.id)
     else
       flash[:error] = "Entry is invalid. Please fill in all entries with valid information."
-      redirect_to edit_merchant_item_path(merchant.id, item.id)
+      render :edit
     end
   end
 
@@ -37,7 +36,8 @@ class MerchantItemsController < ApplicationController
   end
 
   def create
-    item = Item.new(item_params)
+    item = Item.new(strong_params)
+
     if item.save
       redirect_to merchant_items_path(params[:merchant_id])
       flash[:success] = "#{item.name} has been successfully created."
@@ -50,6 +50,16 @@ class MerchantItemsController < ApplicationController
   private
 
   def item_params
+    params.require(:item).permit(
+      :name,
+      :description,
+      :unit_price,
+      :merchant_id,
+      :status
+    )
+  end
+
+  def strong_params
     params.permit(
       :name,
       :description,

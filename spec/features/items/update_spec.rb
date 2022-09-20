@@ -15,15 +15,15 @@ RSpec.describe 'Merchant Item Update Page: ' do
   describe 'As a merchant' do
     describe 'when I visit the merchant show page of an item' do
       it 'when update link is clicked, merchant is taken to a page to edit the item.' do
-        visit merchant_item_path(@merch2.id, @item4.id)
+        visit item_path(@item4.id)
 
         click_link "Update #{@item4.name}"
 
-        expect(current_path).to eq(edit_merchant_item_path(@merch2.id, @item4.id))
+        expect(current_path).to eq(edit_item_path(@item4.id))
       end
 
       it 'there is a form with the existing item attribute information' do
-        visit edit_merchant_item_path(@merch1.id, @item2.id)
+        visit edit_item_path(@item2.id)
 
         expect(page).to have_content("Update Name")
         expect(page).to have_content("Update Description")
@@ -31,31 +31,31 @@ RSpec.describe 'Merchant Item Update Page: ' do
       end
 
       it "When I update the information in the form and I click 'submit'" do
-        visit edit_merchant_item_path(@merch1.id, @item2.id)
+        visit edit_item_path(@item2.id)
 
-        expect(page).to have_button("Submit Changes")
+        expect(page).to have_button("Update Item")
       end
 
       it 'I am redirected back to the item show page' do
-        visit edit_merchant_item_path(@merch1.id, @item2.id)
+        visit edit_item_path(@item2.id)
 
         fill_in 'Update Name:', with: 'New Name'
         fill_in 'Update Description:', with: 'Description new'
         fill_in 'Update Unit Price:', with: 69575
 
-        click_button "Submit Changes"
+        click_button "Update Item"
 
-        expect(current_path).to eq(merchant_item_path(@merch1.id, @item2.id))
+        expect(current_path).to eq(item_path(@item2.id))
       end
 
       it 'I see the updated information' do
-        visit edit_merchant_item_path(@merch2.id, @item5.id)
+        visit edit_item_path(@item5.id)
 
         fill_in "Update Name:", with: 'New Name'
         fill_in "Update Description:", with: 'Description new'
         fill_in "Update Unit Price:", with: 69575
 
-        click_button "Submit Changes"
+        click_button "Update Item"
 
         expect(page).to have_content('New Name')
         expect(page).to have_content('Description new')
@@ -63,49 +63,49 @@ RSpec.describe 'Merchant Item Update Page: ' do
       end
 
       it 'I see a flash message stating that the information has been successfully updated' do
-        visit edit_merchant_item_path(@merch2.id, @item5.id)
+        visit edit_item_path(@item5.id)
 
         fill_in "Update Name:", with: 'New Name'
         fill_in "Update Description:", with: 'Description new'
         fill_in "Update Unit Price:", with: 69575
 
-        click_button "Submit Changes"
+        click_button "Update Item"
 
         expect(page).to have_content("New Name has been successfully updated.")
       end
 
       it 'I see a flash message stating that the information has been successfully updated' do
-        visit edit_merchant_item_path(@merch2.id, @item5.id)
+        visit edit_item_path(@item5.id)
 
         fill_in "Update Name:", with: 'New Name'
         fill_in "Update Description:", with: 'Description new'
         fill_in "Update Unit Price:", with: "Sweet, sweet bread"
 
-        click_button "Submit Changes"
+        click_button "Update Item"
 
         expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
       end
 
       it 'I see a flash message stating that the information has been successfully updated' do
-        visit edit_merchant_item_path(@merch2.id, @item5.id)
+        visit edit_item_path(@item5.id)
 
         fill_in "Update Name:", with: ''
         fill_in "Update Description:", with: 'Description new'
         fill_in "Update Unit Price:", with: "Sweet, sweet bread"
 
-        click_button "Submit Changes"
+        click_button "Update Item"
 
         expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
       end
 
       it 'I see a flash message stating that the information has been successfully updated' do
-        visit edit_merchant_item_path(@merch2.id, @item5.id)
+        visit edit_item_path(@item5.id)
 
         fill_in "Update Name:", with: 'Something New'
         fill_in "Update Description:", with: ''
         fill_in "Update Unit Price:", with: "Sweet, sweet bread"
 
-        click_button "Submit Changes"
+        click_button "Update Item"
 
         expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information")
       end
