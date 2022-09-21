@@ -21,6 +21,8 @@ class Invoice < ApplicationRecord
       joins(:invoice_items)
       .select('invoices.*')
       .where('invoice_items.status < ?', 2 )
-    end
+      .order(created_at: :asc)
+  end
+
 
 end
