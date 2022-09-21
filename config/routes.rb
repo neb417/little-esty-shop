@@ -17,3 +17,4 @@ Rails.application.routes.draw do
     resources :merchants, except: [:destroy]
     resources :invoices, except: [:destroy]
   end
+end
