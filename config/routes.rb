@@ -15,5 +15,6 @@ Rails.application.routes.draw do
     get '/', to: 'dashboard#index'
     resources :invoices, only: [:index, :show]
     resources :merchants, except: [:destroy]
+    resources :invoices
   end
 end
