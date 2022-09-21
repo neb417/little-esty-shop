@@ -12,8 +12,8 @@ RSpec.describe 'admin dashboard' do
     @customer6 = Customer.create!(first_name: 'Wyatt', last_name: 'Kribs')
 
     @invoice1 = Invoice.create!(customer_id: @customer1.id, status: 2)
-    @invoice2 = Invoice.create!(customer_id: @customer1.id, status: 2)
-    @invoice3 = Invoice.create!(customer_id: @customer1.id, status: 2)
+    @invoice2 = Invoice.create!(customer_id: @customer1.id, status: 2, created_at: 10.seconds.ago)
+    @invoice3 = Invoice.create!(customer_id: @customer1.id, status: 2, created_at: 100.seconds.ago)
     @invoice4 = Invoice.create!(customer_id: @customer1.id, status: 2)
     @invoice5 = Invoice.create!(customer_id: @customer1.id, status: 2)
     @invoice6 = Invoice.create!(customer_id: @customer2.id, status: 2)
@@ -114,6 +114,14 @@ RSpec.describe 'admin dashboard' do
 
   it 'has working routes for the links' do
     click_link "#{@invoice2.id}"
+  end
+
+  it 'has the creation date for the invoices' do
+    expect(page).to have_content("Date Created: #{@invoice2.created_at.strftime("%A, %B %-d, %Y")}")
+  end
+
+  it 'is ordered with the oldest first' do
+    expect("#{@invoice3.id}").to appear_before("#{@invoice2.id}")
   end
 
 
