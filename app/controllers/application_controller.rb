@@ -6,6 +6,5 @@ class ApplicationController < ActionController::Base
 
   def get_github_data
     @repo = GitHubFacade.generate_repo
-    
   end
 end
