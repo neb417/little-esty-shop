@@ -15,4 +15,14 @@ class Invoice < ApplicationRecord
       .where('items.merchant_id = ?', merchant.id)
   end
 
+
+
+  def self.incomplete_invoices
+      joins(:invoice_items)
+      .select('invoices.*')
+      .where('invoice_items.status < ?', 2 )
+      .order(created_at: :asc)
+  end
+
+
 end

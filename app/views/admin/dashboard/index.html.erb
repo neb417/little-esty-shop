@@ -7,3 +7,9 @@
   <p><%= c.first_name + ' ' + c.last_name %>
   <%= c.transaction_count %> Purchases </p>
 <% end %>
+
+<h3> Incomplete Invoices </h3>
+<% @incomplete_invoices.each do |i| %>
+<p><%= link_to "#{i.id}", "/admin/invoices/#{i.id}", method: :get %></p>
+<p> Date Created: <%= "#{i.created_at.strftime("%A, %B %-d, %Y")}" %></p>
+<% end %>
