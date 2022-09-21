@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'admin dashboard' do
   before :each do
+    @merchant = create(:merchant)
+
     @customer1 = Customer.create!(first_name: 'Gunther', last_name: 'Guyman')
     @customer2 = Customer.create!(first_name: 'Miles', last_name: 'Prower')
     @customer3 = Customer.create!(first_name: 'Mario', last_name: 'Mario')
@@ -24,6 +26,15 @@ RSpec.describe 'admin dashboard' do
     @invoice13 = Invoice.create!(customer_id: @customer4.id, status: 2)
     @invoice14 = Invoice.create!(customer_id: @customer4.id, status: 2)
     @invoice15 = Invoice.create!(customer_id: @customer5.id, status: 2)
+
+    @item1 = create(:item, merchant: @merchant)
+    @item2 = create(:item, merchant: @merchant)
+    @item3 = create(:item, merchant: @merchant)
+
+    @inv_item1 = InvoiceItem.create!(item_id: @item1.id, invoice_id: @invoice1.id, quantity: 5, unit_price: 5, status: 2)
+    @inv_item2 = InvoiceItem.create!(item_id: @item2.id, invoice_id: @invoice2.id, quantity: 5, unit_price: 5, status: 0)
+    @inv_item3 = InvoiceItem.create!(item_id: @item3.id, invoice_id: @invoice3.id, quantity: 5, unit_price: 5, status: 0)
+
 
     @transaction1 = Transaction.create!(invoice_id: @invoice1.id, credit_card_number: 12345, result: 1)
     @transaction2 = Transaction.create!(invoice_id: @invoice2.id, credit_card_number: 12345, result: 1)
@@ -59,7 +70,7 @@ RSpec.describe 'admin dashboard' do
     expect(current_path).to eq("/admin/merchants")
   end
 
-  xit "has a working invoices index link" do
+  it "has a working invoices index link" do
     click_link "invoices"
     expect(current_path).to eq("/admin/invoices")
   end
@@ -93,4 +104,17 @@ RSpec.describe 'admin dashboard' do
     expect(page).to have_content(Customer.top_customers[3].transaction_count)
     expect(page).to have_content(Customer.top_customers[4].transaction_count)
   end
+
+
+  it 'has a section for incomplete invoices' do
+    expect(page).to have_content("Incomplete Invoices")
+    expect(page).to have_link("#{@invoice2.id}")
+    expect(page).to have_link("#{@invoice3.id}")
+  end
+
+  it 'has working routes for the links' do
+    click_link "#{@invoice2.id}"
+  end
+
+
 end
