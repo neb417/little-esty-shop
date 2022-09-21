@@ -12,7 +12,7 @@ class GitHubService
   end
   
   def self.contributors
-    get_uri('https://api.github.com/repos/neb417/little-esty-shop/contributors')
+    get_uri('https://api.github.com/repos/neb417/little-esty-shop/contributors') 
   end
   
   def self.get_pulls
