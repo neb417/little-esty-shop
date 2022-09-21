@@ -28,8 +28,8 @@
       <p>GitHub Repo Name: <%= @repo.name %><br>
       Github Contributors:
         <ul id="contributors">
-          <% @repo.contributors.each do |user| %>
-            <li><%= user %></li>
+          <% @repo.team_members.each do |user| %>
+            <li><%= user[:login] %>, commits: <%= user[:commits] %></li>
           <% end %>
         </ul>
       </p>

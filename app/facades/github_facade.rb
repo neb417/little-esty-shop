@@ -6,7 +6,7 @@ class GitHubFacade
   def self.generate_repo
     name = GitHubService.repo[:name]
     contributors = GitHubService.contributors.find_all.with_index{|user, i| [0,1,3,4].include?(i) }
-    contributor_names = contributors.map{|user| user[:login]}
-    Repo.new(name, contributor_names)
+    team_members = contributors.map{|contributor| {login: contributor[:login], commits: contributor[:contributions]}}
+    Repo.new(name, team_members)
   end
 end

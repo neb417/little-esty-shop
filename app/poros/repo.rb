@@ -1,9 +1,9 @@
 class Repo
   attr_reader :name,
-              :contributors
+              :team_members
 
-  def initialize(name, contributors)
+  def initialize(name, team_members)
     @name = name
-    @contributors = contributors
+    @team_members = team_members
   end
 end
