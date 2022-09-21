@@ -37,7 +37,8 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   config.before(:each) do
-    allow(GitHubService).to receive(:get_uri).and_return({name: "little-esty-shop"})
+    allow(GitHubService).to receive(:repo).and_return({name: "little-esty-shop" })
+    allow(GitHubService).to receive(:contributors).and_return([{login: "user1"}, {login: "user2"},{login: "user3"},{login: "user4"}])
   end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

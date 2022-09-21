@@ -24,6 +24,16 @@
 
     <%= yield %>
 
-    <%= @repo.name %>
+    <section id="footer">
+      <p>GitHub Repo Name: <%= @repo.name %><br>
+      Github Contributors:
+        <ul id="contributors">
+          <% @repo.contributors.each do |user| %>
+            <li><%= user %></li>
+          <% end %>
+        </ul>
+      </p>
+      
+    </section>
   </body>
 </html>
