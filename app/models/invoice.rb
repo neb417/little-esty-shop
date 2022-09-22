@@ -15,8 +15,6 @@ class Invoice < ApplicationRecord
       .where('items.merchant_id = ?', merchant.id)
   end
 
-
-
   def self.incomplete_invoices
     joins(:invoice_items)
       .select('invoices.*')
