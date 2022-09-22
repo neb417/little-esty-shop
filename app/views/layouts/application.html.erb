@@ -24,16 +24,6 @@
 
     <%= yield %>
 
-    <section id="footer">
-      <p>GitHub Repo Name: <%= @repo.name %><br>
-      Github Contributors:
-        <ul id="contributors">
-          <% @repo.team_members.each do |user| %>
-            <li><%= user[:login] %>, commits: <%= user[:commits] %></li>
-          <% end %>
-        </ul>
-        <br>Number of Merged PRs: <%= @repo.pr %>
-      </p>
 
     </section>
   </body>

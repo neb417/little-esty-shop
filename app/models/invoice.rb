@@ -18,11 +18,14 @@ class Invoice < ApplicationRecord
 
 
   def self.incomplete_invoices
-      joins(:invoice_items)
+    joins(:invoice_items)
       .select('invoices.*')
-      .where('invoice_items.status < ?', 2 )
+      .where('invoice_items.status < ?', 2)
       .order(created_at: :asc)
+      .distinct
   end
 
-
+  def total_revenue
+    invoice_items.sum("unit_price * quantity")
+  end
 end

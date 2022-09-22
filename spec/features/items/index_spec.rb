@@ -170,77 +170,78 @@ RSpec.describe 'Merchant Items Index Page: ' do
         end
       end
 
-      describe 'there are names of the top 5 most popular items ranked by revenue' do
-        it 'has a section for top 5' do
-          visit merchant_items_path(@merch1.id)
+    describe 'there are names of the top 5 most popular items ranked by revenue' do
+      it 'has a section for top 5' do
+        visit merchant_items_path(@merch1.id)
 
-          expect(page).to have_content("Top Items")
+        expect(page).to have_content("Top Items")
+      end
+
+      it 'has links to item show page' do
+        visit merchant_items_path(@merch2.id)
+
+        within("#top_items") do
+          within("#rev_item_#{@item3.id}") do
+            expect(page).to have_link(@item3.name)
+          end
+          expect(page).to have_link(@item5.name)
+          expect(page).to have_link(@item6.name)
+          expect(page).to have_link(@item7.name)
+          expect(page).to have_link(@item8.name)
+
+          expect(page).to_not have_link(@item4.name)
+          expect(page).to_not have_link(@item9.name)
+        end
+      end
+
+      it 'links are ordered by top revenue' do
+
+        visit merchant_items_path(@merch2.id)
+
+        within("#top_items") do
+          expect(@item3.name).to appear_before(@item8.name)
+          expect(@item8.name).to appear_before(@item5.name)
+          expect(@item5.name).to appear_before(@item7.name)
+          expect(@item7.name).to appear_before(@item6.name)
+        end
+      end 
+
+      it 'when link is clicked, taken to show page' do
+        visit merchant_items_path(@merch2.id)
+
+        within("#top_items") do
+          click_link @item8.name
         end
 
-        it 'has links to item show page' do
-          visit merchant_items_path(@merch2.id)
+        expect(current_path).to eq(merchant_item_path(@merch2.id, @item8.id))
+      end
 
-          within("#top_items") do
-            within("#rev_item_#{@item3.id}") do
-              expect(page).to have_link(@item3.name)
-            end
-            expect(page).to_not have_link(@item4.name)
-            expect(page).to have_link(@item5.name)
-            expect(page).to have_link(@item6.name)
-            expect(page).to have_link(@item7.name)
-            expect(page).to have_link(@item8.name)
-            expect(page).to_not have_link(@item9.name)
-          end
-        end
+      it 'total revenue for item is displayed' do
+        visit merchant_items_path(@merch2.id)
 
-        it 'links are ordered by top revenue' do
-
-          visit merchant_items_path(@merch2.id)
-
-          within("#top_items") do
-            expect(@item3.name).to appear_before(@item8.name)
-            expect(@item8.name).to appear_before(@item5.name)
-            expect(@item5.name).to appear_before(@item7.name)
-            expect(@item7.name).to appear_before(@item6.name)
-          end
-        end 
-
-        it 'when link is clicked, taken to show page' do
-          visit merchant_items_path(@merch2.id)
-
-          within("#top_items") do
-            click_link @item8.name
+        within("#top_items") do
+          within("#rev_item_#{@item3.id}") do
+            expect(page).to have_content("$30.00")
           end
 
-          expect(current_path).to eq(merchant_item_path(@merch2.id, @item8.id))
-        end
+          within("#rev_item_#{@item8.id}") do
+            expect(page).to have_content("$30.00")
+          end
 
-        it 'total revenue for item is displayed' do
-          visit merchant_items_path(@merch2.id)
+          within("#rev_item_#{@item5.id}") do
+            expect(page).to have_content("$24.00")
+          end
 
-          within("#top_items") do
-            within("#rev_item_#{@item3.id}") do
-              expect(page).to have_content("$30.00")
-            end
+          within("#rev_item_#{@item7.id}") do
+            expect(page).to have_content("$14.00")
+          end
 
-            within("#rev_item_#{@item8.id}") do
-              expect(page).to have_content("$30.00")
-            end
-
-            within("#rev_item_#{@item5.id}") do
-              expect(page).to have_content("$24.00")
-            end
-
-            within("#rev_item_#{@item7.id}") do
-              expect(page).to have_content("$14.00")
-            end
-
-            within("#rev_item_#{@item6.id}") do
-              expect(page).to have_content("$13.00")
-            end
+          within("#rev_item_#{@item6.id}") do
+            expect(page).to have_content("$13.00")
           end
         end
       end
+    end
 
       describe 'next to each of the 5 most popular items' do
         it 'I see the date with the most sales for each item' do

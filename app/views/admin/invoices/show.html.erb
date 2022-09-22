@@ -1,3 +1,23 @@
-<h1>Invoice show page</h1>
+<h1>Invoice show page for <%= @invoice.id %></h1>
 
-<%= @invoice.id %>
+<strong>Status: </strong>
+  <section id="status-update-<%= @invoice.id %>">
+    <%= form_with model: @invoice, url: admin_invoice_path(@invoice), method: :patch do |f| %>
+      <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
+      <%= f.submit 'Update Invoice' %>
+    <% end %>
+  </section>
+
+<p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %>
+<p>Total Revenue: <%= price_convert(@invoice.total_revenue) %></p>
+
+<strong>Items on Invoice</strong>
+<br>
+  <% @invoice.invoice_items.each do |i| %>
+    <tr>
+      <td><%= i.item.name %></td>
+      <td><%= i.quantity %></td>
+      <td><%= price_convert(i.unit_price) %></td>
+      <td><%= i.status%></td><br/>
+    </tr>
+  <% end %>
