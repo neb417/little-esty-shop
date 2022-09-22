@@ -1,10 +1,10 @@
-<h1>Invoice show page for <%= @invoice.id %></h1>
+<h1>Invoice #<%= @invoice.id %></h1>
 
 <strong>Status: </strong>
   <section id="status-update-<%= @invoice.id %>">
-    <%= form_with model: @invoice, url: admin_invoice_path(@invoice), method: :patch do |f| %>
-      <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
-      <%= f.submit 'Update Invoice' %>
+    <%= form_with model: [:admin, @invoice], local: true do |f| %>
+      <%= f.select :status, [["In Progress", :in_progress], ["Completed", :completed], ["Cancelled", :cancelled]] %>
+      <%= f.submit %>
     <% end %>
   </section>
 

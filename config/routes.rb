@@ -13,8 +13,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get '/', to: 'dashboard#index'
-    resources :invoices, only: [:index, :show]
+    resources :items, except: [:destroy]
     resources :merchants, except: [:destroy]
-    resources :invoices, except: [:destroy]
+    resources :invoices, only: [:index, :show, :update]
   end
 end
