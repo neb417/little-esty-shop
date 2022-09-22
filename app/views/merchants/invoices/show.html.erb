@@ -6,7 +6,7 @@
   <div class="inv_info"><strong>Customer:</strong> <%= "#{@customer.first_name} #{@customer.last_name}" %></div>
   <div class="inv_info"><strong>Total Revenue:</strong> <%= price_convert(@invoice_items.total_revenue) %></div>
   <div class="inv_info"><strong>Items on this Invoice:</strong></div>
-  <table class="invoice_items">
+  <table class="invoice_items" id="merchant_invoice_items">
     <tr>
       <th>Item Name</th>
       <th>Quantity</th>
