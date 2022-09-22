@@ -61,17 +61,17 @@ RSpec.describe 'admin dashboard' do
   end
 
   it "has links to the merchant and invoice index pages" do
-    expect(page).to have_link("merchants")
-    expect(page).to have_link("invoices")
+    expect(page).to have_link("Merchants")
+    expect(page).to have_link("Invoices")
   end
 
   it "has a working merchants index link" do
-    click_link "merchants"
+    click_link "Merchants"
     expect(current_path).to eq("/admin/merchants")
   end
 
   it "has a working invoices index link" do
-    click_link "invoices"
+    click_link "Invoices"
     expect(current_path).to eq("/admin/invoices")
   end
 
