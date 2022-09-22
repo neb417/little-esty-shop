@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   #   <br>Number of Merged PRs: <%= @repo.pr %>
   # </p>
 
-  def get_github_data
-    @repo = GitHubFacade.generate_repo
-  end
+  # def get_github_data
+  #   @repo = GitHubFacade.generate_repo
+  # end
 end
