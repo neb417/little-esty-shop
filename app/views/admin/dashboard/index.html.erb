@@ -1,6 +1,6 @@
 <h1> Admin Dashboard </h1>
-<p><%= link_to "merchants", "/admin/merchants", method: :get%></p>
-<p><%= link_to "invoices", "/admin/invoices", method: :get%></p>
+<p><%= link_to "Merchants", admin_merchants_path, method: :get%></p>
+<p><%= link_to "Invoices", admin_invoices_path, method: :get%></p>
 
 <h3> Top 5 Customers </h3>
 <% @top_customers.each do |c| %>
@@ -10,6 +10,6 @@
 
 <h3> Incomplete Invoices </h3>
 <% @incomplete_invoices.each do |i| %>
-<p><%= link_to "#{i.id}", "/admin/invoices/#{i.id}", method: :get %></p>
+<p><%= link_to "#{i.id}", admin_invoice_path(i.id), method: :get %></p>
 <p> Date Created: <%= "#{i.created_at.strftime("%A, %B %-d, %Y")}" %></p>
 <% end %>
