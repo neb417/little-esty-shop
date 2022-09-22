@@ -6,9 +6,9 @@
     <%= f.submit %>
   <% end %>
 </div>
-<p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %><br>
-Total Revenue: <%= price_convert(@invoice.total_revenue) %><br>
-Items on Invoice:</p>
+<p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></p>
+<p>Total Revenue: <%= price_convert(@invoice.total_revenue) %></p>
+<p><strong>Items on Invoice:</strong></p>
 <table class="invoice_items">
   <tr>
   <th>Item</th><th>Quantity Sold</th><th>Price Sold</th><th>Item Status</th>
@@ -18,7 +18,7 @@ Items on Invoice:</p>
       <td><%= i.item.name %></td>
       <td><%= i.quantity %></td>
       <td><%= price_convert(i.unit_price) %></td>
-      <td><%= i.status.titleize%></td><br/>
+      <td><%= i.status.titleize%></td>
     </tr>
   <% end %>
 </table>
