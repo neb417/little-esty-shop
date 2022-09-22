@@ -1,23 +1,24 @@
 <h1>Invoice #<%= @invoice.id %></h1>
-
-<strong>Status: </strong>
-  <section id="status-update-<%= @invoice.id %>">
-    <%= form_with model: [:admin, @invoice], local: true do |f| %>
-      <%= f.select :status, [["In Progress", :in_progress], ["Completed", :completed], ["Cancelled", :cancelled]] %>
-      <%= f.submit %>
-    <% end %>
-  </section>
-
-<p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %>
-<p>Total Revenue: <%= price_convert(@invoice.total_revenue) %></p>
-
-<strong>Items on Invoice</strong>
-<br>
+<div id="status-update-<%= @invoice.id %>">
+  <strong>Status: </strong>
+  <%= form_with model: [:admin, @invoice], local: true do |f| %>
+    <%= f.select :status, [["In Progress", :in_progress], ["Completed", :completed], ["Cancelled", :cancelled]] %>
+    <%= f.submit %>
+  <% end %>
+</div>
+<p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %><br>
+Total Revenue: <%= price_convert(@invoice.total_revenue) %><br>
+Items on Invoice:</p>
+<table class="invoice_items">
+  <tr>
+  <th>Item</th><th>Quantity Sold</th><th>Price Sold</th><th>Item Status</th>
+  </tr>
   <% @invoice.invoice_items.each do |i| %>
     <tr>
       <td><%= i.item.name %></td>
       <td><%= i.quantity %></td>
       <td><%= price_convert(i.unit_price) %></td>
-      <td><%= i.status%></td><br/>
+      <td><%= i.status.titleize%></td><br/>
     </tr>
   <% end %>
+</table>
