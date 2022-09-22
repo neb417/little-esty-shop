@@ -48,13 +48,13 @@ body {
   margin: 10px;
 }
 
-#merchant_invoice_items {
+.invoice_items {
   margin: auto;
   width: calc(100% - 20px);
   border-collapse: collapse;
 }
 
-#merchant_invoice_items th {
+.invoice_items th {
   background-color: darkgray;
   color: white;
   padding-top: 5px;
@@ -62,7 +62,7 @@ body {
   border: 1px solid black;
 }
 
-#merchant_invoice_items td {
+.invoice_items td {
   background-color: lightgray;
   text-align: center;
   padding-top: 5px;
