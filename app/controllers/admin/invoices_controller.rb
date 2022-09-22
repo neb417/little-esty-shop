@@ -10,7 +10,6 @@ class Admin::InvoicesController < ApplicationController
 
   def update
     @invoice = Invoice.find(params[:id])
-    binding.pry
     if @invoice.update(invoice_params)
       flash[:success] = "Invoice #{@invoice.id} status successfully updated."
       render :show
