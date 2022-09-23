@@ -2,12 +2,12 @@
 
 <%= link_to "New Bulk Discount", new_merchant_bulk_discount_path(@merchant.id) %>
 
-<section id="bulk_discount_list">
+<ul id="bulk_discount_list">
   <% @bulk_discounts.each do |discount| %>
-   <div id="bulk_discount_<%= discount.id %>"> 
+   <li id="bulk_discount_<%= discount.id %>"> 
     <%= discount.name %> is a discount of
     <%= discount.percentage %> when
     <%= discount.threshold %> or more items are perchased.
-    </div>
+    </li>
   <% end %>
-</section>
+</ul>
