@@ -60,7 +60,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
       it 'percentage discount and quantity thresholds' do
         visit merchant_bulk_discounts_path(@merch1.id)
-        
+
         within("#bulk_discount_list") do
           @merch1.bulk_discounts.each do |discount|
             within("#bulk_discount_#{discount.id}") do
@@ -71,7 +71,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
           end
         end
       end
-      
+
       it 'each bulk discount listed includes a link to its show page' do
         visit merchant_bulk_discounts_path(@merch1.id)
 
@@ -79,11 +79,15 @@ RSpec.describe 'Merchant Items Index Page: ' do
         expect(page).to have_link(@disc2.name)
         expect(page).to_not have_link(@disc3.name)
       end
-      
+
       it 'there is a link to create a new bulk discount' do
         visit merchant_bulk_discounts_path(@merch1.id)
 
         expect(page).to have_link("New Bulk Discount")
+
+        click_link "New Bulk Discount"
+
+        expect(current_path).to eq(new_merchant_bulk_discount_path(@merch1.id))
       end
 
     end
