@@ -5,8 +5,8 @@
 <ul id="bulk_discount_list">
   <% @bulk_discounts.each do |discount| %>
    <li id="bulk_discount_<%= discount.id %>"> 
-    <%= discount.name %> is a discount of
-    <%= discount.percentage %> when
+    <%= link_to discount.name, merchant_bulk_discount_path(@merchant.id, discount.id) %> is a discount of
+    <%= discount.percentage %>% when
     <%= discount.threshold %> or more items are perchased.
     </li>
   <% end %>
