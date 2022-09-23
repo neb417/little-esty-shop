@@ -1,4 +1,8 @@
 <%= render partial: '/merchants/merchants-nav', locals: {merchant: @merchant} %>
+<div class="bulk_disc_link">
+  <%= link_to "My Bulk Discounts", merchant_bulk_discounts_path(@merchant.id) %>
+</div>
+
 <div id="dashboard_body">
   <div class="dashboard_column" id="items_ready">
     <h2 class="subtitle">Items Ready to Ship</h2>
