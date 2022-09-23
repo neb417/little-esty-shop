@@ -55,6 +55,8 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
         expect(page).to have_link("New Bulk Discount")
       end
+
+
     end
   end
 end
