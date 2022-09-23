@@ -99,7 +99,7 @@ RSpec.describe 'Merchant Dashboard Index' do
 
     it 'lists invoice items ready to ship with a link to the invoice show page and the date the invoice was created' do
       expect(page).to have_content("Items Ready to Ship")
-      
+
       @merchant.inv_items_ready_to_ship.each do |inv_item|
         visit(merchant_dashboard_path(@merchant.id))
         within ("li#item_ready_#{inv_item.id}")  do

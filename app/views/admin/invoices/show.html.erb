@@ -13,12 +13,12 @@
   <tr>
   <th>Item</th><th>Quantity Sold</th><th>Price Sold</th><th>Item Status</th>
   </tr>
-  <% @invoice.invoice_items.each do |i| %>
+  <% @invoice.invoice_items.each do |invoice| %>
     <tr>
-      <td><%= i.item.name %></td>
-      <td><%= i.quantity %></td>
-      <td><%= price_convert(i.unit_price) %></td>
-      <td><%= i.status.titleize%></td>
+      <td><%= invoice.item.name %></td>
+      <td><%= invoice.quantity %></td>
+      <td><%= price_convert(invoice.unit_price) %></td>
+      <td><%= invoice.status.titleize%></td>
     </tr>
   <% end %>
 </table>

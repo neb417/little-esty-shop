@@ -1,9 +1,9 @@
 <h1>Invoice Index Page</h1>
 
 
-<% @invoices.each do |i| %>
-<div id="inv-<%= i.id%>">
-  <p>Invoice # <%=link_to"#{i.id}", admin_invoice_path(i.id) %> </p>
-  <p>Created: <%= i.created_at.strftime("%A, %B %d, %Y") %></p>
+<% @invoices.each do |invoice| %>
+<div id="inv-<%= invoice.id%>">
+  <p>Invoice # <%=link_to"#{invoice.id}", admin_invoice_path(invoice.id) %> </p>
+  <p>Created: <%= invoice.created_at.strftime("%A, %B %d, %Y") %></p>
 </div>
 <% end  %>

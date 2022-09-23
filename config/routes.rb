@@ -8,12 +8,13 @@ Rails.application.routes.draw do
       resources :invoices, only: [:index, :show]
     end
   end
-
-  resources :invoice_items, only: [:update]
+  
+  resources :invoice_items, only: [:index, :show, :update]
 
   namespace :admin do
     get '/', to: 'dashboard#index'
     resources :items, except: [:destroy]
+    resources :invoice_items, only: [:update]
     resources :merchants, except: [:destroy]
     resources :invoices, only: [:index, :show, :update]
   end
