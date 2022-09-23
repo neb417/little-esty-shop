@@ -3,7 +3,7 @@ FactoryBot.define do
   factory :invoice_item do
     item
     invoice
-    quantity {rand(1..500)}
+    quantity { rand(1..500) }
     unit_price { rand(100..15000) }
     status { rand(3) }
   end
@@ -21,18 +21,24 @@ FactoryBot.define do
 
   factory :item do 
     merchant
-    sequence(:name){ |n| "Item #{n}"}
+    sequence(:name) { |n| "Item #{n}"}
     description {"test item description"}
     unit_price { rand(100..15000) }
   end
 
   factory :customer do
-    sequence(:first_name) {|n| "Firstname#{n}"}
-    sequence(:last_name) {|n| "Lastname#{n}"}
+    sequence(:first_name) { |n| "Firstname#{n}" }
+    sequence(:last_name) { |n| "Lastname#{n}" }
   end
 
   factory :merchant do
-    sequence(:name){ |n| "Merchant #{n}" }
+    sequence(:name) { |n| "Merchant #{n}" }
   end
-  
+
+  factory :bulk_discount do
+    merchant
+    sequence(:name) { |n| "Bulk Discount #{n}" }
+    percentage { rand(5..30) }
+    threshold { rand(15..100) }
+  end
 end
