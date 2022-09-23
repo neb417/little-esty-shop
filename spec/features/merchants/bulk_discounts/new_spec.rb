@@ -47,40 +47,9 @@ RSpec.describe 'Merchant Items Index Page: ' do
     @disc2 = create(:bulk_discount, percentage: 20, threshold: 25, merchant_id: @merch1.id)
     @disc3 = create(:bulk_discount, percentage: 15, threshold: 30, merchant_id: @merch2.id)
   end
-
   describe 'As a Merchant' do
     describe 'when visiting bulk discount index page' do
-      it 'all of my bulk discounts are displayed' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        expect(page).to have_content(@disc1.name)
-        expect(page).to have_content(@disc2.name)
-        expect(page).to_not have_content(@disc3.name)
-      end
-
-      it 'percentage discount and quantity thresholds' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        within("#bulk_discount_list") do
-          @merch1.bulk_discounts.each do |discount|
-            within("#bulk_discount_#{discount.id}") do
-              expect(page).to have_content(discount.name)
-              expect(page).to have_content(discount.percentage)
-              expect(page).to have_content(discount.threshold)
-            end
-          end
-        end
-      end
-
-      it 'each bulk discount listed includes a link to its show page' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        expect(page).to have_link(@disc1.name)
-        expect(page).to have_link(@disc2.name)
-        expect(page).to_not have_link(@disc3.name)
-      end
-
-      it 'there is a link to create a new bulk discount' do
+      it 'directs to new bulk discount page' do
         visit merchant_bulk_discounts_path(@merch1.id)
 
         expect(page).to have_link("New Bulk Discount")
@@ -88,6 +57,78 @@ RSpec.describe 'Merchant Items Index Page: ' do
         click_link "New Bulk Discount"
 
         expect(current_path).to eq(new_merchant_bulk_discount_path(@merch1.id))
+      end
+
+      it 'I see a form to add a new bulk discount' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        expect(page).to have_content "Enter Bulk Discount Name"
+        expect(page).to have_content "Enter Bulk Discount Threshold"
+        expect(page).to have_content "Enter Bulk Discount Percentage"
+        expect(page).to have_content "Save"
+      end
+
+      it 'fill in form and redirect to bulk discount index' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Name", with: "New Discount"
+        fill_in "Enter Bulk Discount Threshold", with: 50
+        fill_in "Enter Bulk Discount Percentage", with: 35
+
+        click_button "Save"
+
+        expect(current_path).to eq(merchant_bulk_discounts_path(@merch1.id))
+      end
+
+      it 'new discount is listed on index page' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Name", with: "New Discount"
+        fill_in "Enter Bulk Discount Threshold", with: 50
+        fill_in "Enter Bulk Discount Percentage", with: 35
+
+        click_button "Save"
+
+        expect(page).to have_content("Your Bulk Discount has been Created")
+        expect(page).to have_link("New Discount")
+      end
+
+      it 'sad path for invalid Name filled in' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Threshold", with: 50
+        fill_in "Enter Bulk Discount Percentage", with: 35
+
+        click_button "Save"
+
+        expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
+        expect(page).to have_content("Please Create Bulk Discount with valid information")
+      end
+
+      it 'sad path for invalid Threshold filled in' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Name", with: "New Discount"
+        fill_in "Enter Bulk Discount Threshold", with: "Some Numbers"
+        fill_in "Enter Bulk Discount Percentage", with: 35
+
+        click_button "Save"
+
+        expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
+        expect(page).to have_content("Please Create Bulk Discount with valid information")
+      end
+
+      it 'sad path for invalid Threshold filled in' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Name", with: "New Discount"
+        fill_in "Enter Bulk Discount Threshold", with: 35
+        fill_in "Enter Bulk Discount Percentage", with: "Some Numbers"
+
+        click_button "Save"
+
+        expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
+        expect(page).to have_content("Please Create Bulk Discount with valid information")
       end
     end
   end
