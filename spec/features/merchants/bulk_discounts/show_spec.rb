@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchant Bulk Discount Index Page: ' do
+RSpec.describe 'Merchant Bulk Discount Show Page: ' do
 
   before(:each) do
     @merch1 = create(:merchant)
@@ -49,76 +49,14 @@ RSpec.describe 'Merchant Bulk Discount Index Page: ' do
   end
 
   describe 'As a Merchant' do
-    describe 'when visiting bulk discount index page' do
-      it 'all of my bulk discounts are displayed' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        expect(page).to have_content(@disc1.name)
-        expect(page).to have_content(@disc2.name)
-        expect(page).to_not have_content(@disc3.name)
-      end
-
-      it 'percentage discount and quantity thresholds' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        within("#bulk_discount_list") do
-          @merch1.bulk_discounts.each do |discount|
-            within("#bulk_discount_#{discount.id}") do
-              expect(page).to have_content(discount.name)
-              expect(page).to have_content(discount.percentage)
-              expect(page).to have_content(discount.threshold)
-            end
-          end
-        end
-      end
-
-      it 'each bulk discount listed includes a link to its show page' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        expect(page).to have_link(@disc1.name)
-        expect(page).to have_link(@disc2.name)
-        expect(page).to_not have_link(@disc3.name)
-      end
-
-      it 'there is a link to create a new bulk discount' do
-        visit merchant_bulk_discounts_path(@merch1.id)
-
-        expect(page).to have_link("New Bulk Discount")
-
-        click_link "New Bulk Discount"
-
-        expect(current_path).to eq(new_merchant_bulk_discount_path(@merch1.id))
-      end
-
-      describe 'destroy bulk discount' do
-        it 'next to each bulk discount I see a link to delete it' do
-          visit merchant_bulk_discounts_path(@merch1.id)
-
-          within("#bulk_discount_list") do
-            expect(page).to have_link("Delete #{@disc1.name}")
-            expect(page).to have_link("Delete #{@disc2.name}")
-            expect(page).to_not have_link("Delete #{@disc3.name}")
-          end
-        end
-
-        it 'I click this link, redirected back to the bulk discounts index page' do
-          visit merchant_bulk_discounts_path(@merch1.id)
-
-          click_link "Delete #{@disc1.name}"
-
-          expect(current_path).to eq(merchant_bulk_discounts_path(@merch1.id))
-        end
-
-        it 'no longer see the discount listed' do
-          visit merchant_bulk_discounts_path(@merch1.id)
-
-          click_link "Delete #{@disc1.name}"
-
-          within("#bulk_discount_list") do
-            expect(page).to_not have_content(@disc1.name)
-            expect(page).to have_content(@disc2.name)
-          end
-        end
+    describe 'visiting my bulk discount show page' do
+      it "the bulk discount's quantity threshold and percentage discount is seen" do
+        visit merchant_bulk_discount_path(@merch2.id, @disc3.id)
+        expect(page).to have_content(@disc3.name)
+        expect(page).to have_content(@disc3.threshold)
+        expect(page).to have_content(@disc3.percentage)
+        expect(page).to_not have_content(@disc1.name)
+        expect(page).to_not have_content(@disc2.name)
       end
     end
   end
