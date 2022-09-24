@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchant Bulk Discount Show Page: ' do
+RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
   before(:each) do
     @merch1 = create(:merchant)
@@ -49,26 +49,73 @@ RSpec.describe 'Merchant Bulk Discount Show Page: ' do
   end
 
   describe 'As a Merchant' do
-    describe 'visiting my bulk discount show page' do
-      it "the bulk discount's quantity threshold and percentage discount is seen" do
-        visit merchant_bulk_discount_path(@merch2.id, @disc3.id)
+    describe 'on my bulk discount edit page' do
+      it 'I see that the discounts current attributes are pre-poluated in the form' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
 
+        expect(page).to have_content('Update Bulk Discount Name')
+        expect(page).to have_content('Update Bulk Discount Threshold')
+        expect(page).to have_content('Update Bulk Discount Percentage')
         expect(page).to have_content(@disc3.name)
         expect(page).to have_content(@disc3.threshold)
         expect(page).to have_content(@disc3.percentage)
+        expect(page).to have_button("Save")
+
         expect(page).to_not have_content(@disc1.name)
         expect(page).to_not have_content(@disc2.name)
       end
 
-      it 'there is a link to edit the bulk discount' do
-        visit merchant_bulk_discount_path(@merch2.id, @disc3.id)
-        expect(page).to have_link("Edit #{@disc3.name}")
-        expect(page).to_not have_link("Edit #{@disc1.name}")
-        expect(page).to_not have_link("Edit #{@disc2.name}")
+      it 'redirected to bulk discount show page when any/all attributes are updated' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
 
-        click_link  "Edit #{@disc3.name}"
+        fill_in 'Update Bulk Discount Name', with: 'New discount'
 
-        expect(current_path).to eq(edit_merchant_bulk_discount_path(@merch2.id, @disc3.id))
+        click_button 'Save'
+
+        expect(current_path).to eq(merchant_bulk_discount_path(@merch2.id, @disc3.id))
+      end
+
+      it 'show page reflects name change made' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+      end
+
+      it 'show page reflects threshold change made' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+      end
+
+      it 'show page reflects percentage change made' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+      end
+
+      it 'sad path reflects invalid Name entry' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        
+        fill_in 'Update Bulk Discount Name', with: ''
+
+        click_button 'Save'
+
+        expect(page).to have_content("Please enter valid information to Update Bulk Discount")
+      end
+
+      it 'sad path reflects invalid Threshold entry' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+        
+        fill_in 'Update Bulk Discount Threshold', with: 'Number'
+
+        click_button 'Save'
+
+        expect(page).to have_content("Please enter valid information to Update Bulk Discount")
+      end
+
+      it 'sad path reflects invalid Percentage entry' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        fill_in 'Update Bulk Discount Percentage', with: 'Number'
+
+        click_button 'Save'
+
+        expect(page).to have_content("Please enter valid information to Update Bulk Discount")
       end
     end
   end
