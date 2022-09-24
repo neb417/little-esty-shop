@@ -53,16 +53,13 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
       it 'I see that the discounts current attributes are pre-poluated in the form' do
         visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
 
-        expect(page).to have_content('Update Bulk Discount Name')
-        expect(page).to have_content('Update Bulk Discount Threshold')
-        expect(page).to have_content('Update Bulk Discount Percentage')
-        expect(page).to have_content(@disc3.name)
-        expect(page).to have_content(@disc3.threshold)
-        expect(page).to have_content(@disc3.percentage)
-        expect(page).to have_button("Save")
+        expect(page).to have_field('Update Bulk Discount Name', with: @disc3.name)
+        expect(page).to have_field('Update Bulk Discount Threshold', with: @disc3.threshold)
+        expect(page).to have_field('Update Bulk Discount Percentage', with: @disc3.percentage)
+        expect(page).to have_button('Update Bulk Discount')
 
-        expect(page).to_not have_content(@disc1.name)
-        expect(page).to_not have_content(@disc2.name)
+        expect(page).to_not have_field('Update Bulk Discount Name', with: @disc1.name)
+        expect(page).to_not have_field('Update Bulk Discount Name', with: @disc2.name)
       end
 
       it 'redirected to bulk discount show page when any/all attributes are updated' do
@@ -70,7 +67,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Name', with: 'New discount'
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
         expect(current_path).to eq(merchant_bulk_discount_path(@merch2.id, @disc3.id))
       end
@@ -80,9 +77,9 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Name', with: 'New Name'
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
-        expect(page).to have_content("Successful Update of Bulk Disscount")
+        expect(page).to have_content("Successful Update of New Name")
         expect(page).to have_content("New Name")
       end
 
@@ -91,9 +88,9 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Threshold', with: 57
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
-        expect(page).to have_content("Successful Update of Bulk Disscount")
+        expect(page).to have_content("Successful Update of #{@disc3.name}")
         within("#merchant_bulk_discount") do
           expect(page).to have_content(57)
         end
@@ -104,9 +101,9 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Percentage', with: 25
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
-        expect(page).to have_content("Successful Update of Bulk Disscount")
+        expect(page).to have_content("Successful Update of #{@disc3.name}")
         within("#merchant_bulk_discount") do
           expect(page).to have_content(25)
         end
@@ -117,7 +114,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Name', with: ''
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
         expect(page).to have_content("Please enter valid information to Update Bulk Discount")
       end
@@ -127,7 +124,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Threshold', with: 'Number'
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
         expect(page).to have_content("Please enter valid information to Update Bulk Discount")
       end
@@ -137,7 +134,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         fill_in 'Update Bulk Discount Percentage', with: 'Number'
 
-        click_button 'Save'
+        click_button 'Update Bulk Discount'
 
         expect(page).to have_content("Please enter valid information to Update Bulk Discount")
       end
