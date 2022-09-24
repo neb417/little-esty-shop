@@ -89,6 +89,37 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
         expect(current_path).to eq(new_merchant_bulk_discount_path(@merch1.id))
       end
+
+      describe 'destroy bulk discount' do
+        it 'next to each bulk discount I see a link to delete it' do
+          visit merchant_bulk_discounts_path(@merch1.id)
+
+          within("#bulk_discount_list") do
+            expect(page).to have_link("Delete #{@disc1.name}")
+            expect(page).to have_link("Delete #{@disc2.name}")
+            expect(page).to_not have_link("Delete #{@disc3.name}")
+          end
+        end
+
+        it 'I click this link, redirected back to the bulk discounts index page' do
+          visit merchant_bulk_discounts_path(@merch1.id)
+
+          click_link "Delete #{@disc1.name}"
+
+          expect(current_path).to eq(merchant_bulk_discounts_path(@merch1.id))
+        end
+
+        it 'no longer see the discount listed' do
+          visit merchant_bulk_discounts_path(@merch1.id)
+
+          click_link "Delete #{@disc1.name}"
+
+          within("#bulk_discount_list") do
+            expect(page).to_not have_content(@disc1.name)
+            expect(page).to have_content(@disc2.name)
+          end
+        end
+      end
     end
   end
 end
