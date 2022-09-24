@@ -97,7 +97,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
           within("#bulk_discount_list") do
             expect(page).to have_link("Delete #{@disc1.name}")
             expect(page).to have_link("Delete #{@disc2.name}")
-            expect(page).to_not have_link("Delete #{@disc1.name}")
+            expect(page).to_not have_link("Delete #{@disc3.name}")
           end
         end
 
@@ -111,6 +111,8 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
         it 'no longer see the discount listed' do
           visit merchant_bulk_discounts_path(@merch1.id)
+
+          click_link "Delete #{@disc1.name}"
 
           within("#bulk_discount_list") do
             expect(page).to_not have_content(@disc1.name)

@@ -12,6 +12,7 @@
         <%= link_to discount.name, merchant_bulk_discount_path(@merchant.id, discount.id) %> is a discount of
         <%= discount.percentage %>% when
         <%= discount.threshold %> or more items are purchased.
+        <%= link_to "Delete #{discount.name}","/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}", method: :delete %>
       </li>
     <% end %>
   </ul>
