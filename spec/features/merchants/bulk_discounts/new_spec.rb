@@ -65,7 +65,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         expect(page).to have_content "Enter Bulk Discount Name"
         expect(page).to have_content "Enter Bulk Discount Threshold"
         expect(page).to have_content "Enter Bulk Discount Percentage"
-        expect(page).to have_content "Save"
+        expect(page).to have_button "Create Bulk Discount"
       end
 
       it 'fill in form and redirect to bulk discount index' do
@@ -75,7 +75,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         fill_in "Enter Bulk Discount Threshold", with: 50
         fill_in "Enter Bulk Discount Percentage", with: 35
 
-        click_button "Save"
+        click_button "Create Bulk Discount"
 
         expect(current_path).to eq(merchant_bulk_discounts_path(@merch1.id))
       end
@@ -87,7 +87,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         fill_in "Enter Bulk Discount Threshold", with: 50
         fill_in "Enter Bulk Discount Percentage", with: 35
 
-        click_button "Save"
+        click_button "Create Bulk Discount"
 
         expect(page).to have_content("Your Bulk Discount has been Created")
         expect(page).to have_link("New Discount")
@@ -99,7 +99,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         fill_in "Enter Bulk Discount Threshold", with: 50
         fill_in "Enter Bulk Discount Percentage", with: 35
 
-        click_button "Save"
+        click_button "Create Bulk Discount"
 
         expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
         expect(page).to have_content("Please Create Bulk Discount with valid information")
@@ -112,7 +112,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         fill_in "Enter Bulk Discount Threshold", with: "Some Numbers"
         fill_in "Enter Bulk Discount Percentage", with: 35
 
-        click_button "Save"
+        click_button "Create Bulk Discount"
 
         expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
         expect(page).to have_content("Please Create Bulk Discount with valid information")
@@ -125,7 +125,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         fill_in "Enter Bulk Discount Threshold", with: 35
         fill_in "Enter Bulk Discount Percentage", with: "Some Numbers"
 
-        click_button "Save"
+        click_button "Create Bulk Discount"
 
         expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
         expect(page).to have_content("Please Create Bulk Discount with valid information")
