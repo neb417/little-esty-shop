@@ -11,7 +11,7 @@
       <li id="bulk_discount_<%= discount.id %>"> 
         <%= link_to discount.name, merchant_bulk_discount_path(@merchant.id, discount.id) %> is a discount of
         <%= discount.percentage %>% when
-        <%= discount.threshold %> or more items are perchased.
+        <%= discount.threshold %> or more items are purchased.
       </li>
     <% end %>
   </ul>
