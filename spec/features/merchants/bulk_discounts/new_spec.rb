@@ -93,7 +93,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         expect(page).to have_link("New Discount")
       end
 
-      xit 'sad path for invalid Name filled in' do
+      it 'sad path for invalid Name filled in' do
         visit new_merchant_bulk_discount_path(@merch1.id)
 
         fill_in "Enter Bulk Discount Threshold", with: 50
@@ -101,11 +101,13 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
         click_button "Create Bulk Discount"
 
-        expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
         expect(page).to have_content("Please Create Bulk Discount with valid information")
+        expect(page).to have_content("Enter Bulk Discount Name")
+        expect(page).to have_content("Enter Bulk Discount Threshold")
+        expect(page).to have_content("Enter Bulk Discount Percentage")
       end
 
-      xit 'sad path for invalid Threshold filled in' do
+      it 'sad path for invalid Threshold filled in' do
         visit new_merchant_bulk_discount_path(@merch1.id)
 
         fill_in "Enter Bulk Discount Name", with: "New Discount"
@@ -114,11 +116,13 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
         click_button "Create Bulk Discount"
 
-        expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
         expect(page).to have_content("Please Create Bulk Discount with valid information")
+        expect(page).to have_content("Enter Bulk Discount Name")
+        expect(page).to have_content("Enter Bulk Discount Threshold")
+        expect(page).to have_content("Enter Bulk Discount Percentage")
       end
 
-      xit 'sad path for invalid Threshold filled in' do
+      it 'sad path for invalid Threshold filled in' do
         visit new_merchant_bulk_discount_path(@merch1.id)
 
         fill_in "Enter Bulk Discount Name", with: "New Discount"
@@ -127,8 +131,10 @@ RSpec.describe 'Merchant Items Index Page: ' do
 
         click_button "Create Bulk Discount"
 
-        expect(page).to current_path(new_merchant_bulk_discount_path(@merch1.id))
         expect(page).to have_content("Please Create Bulk Discount with valid information")
+        expect(page).to have_content("Enter Bulk Discount Name")
+        expect(page).to have_content("Enter Bulk Discount Threshold")
+        expect(page).to have_content("Enter Bulk Discount Percentage")
       end
     end
   end
