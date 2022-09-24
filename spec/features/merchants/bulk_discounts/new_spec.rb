@@ -93,7 +93,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         expect(page).to have_link("New Discount")
       end
 
-      it 'sad path for invalid Name filled in' do
+      xit 'sad path for invalid Name filled in' do
         visit new_merchant_bulk_discount_path(@merch1.id)
 
         fill_in "Enter Bulk Discount Threshold", with: 50
@@ -105,7 +105,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         expect(page).to have_content("Please Create Bulk Discount with valid information")
       end
 
-      it 'sad path for invalid Threshold filled in' do
+      xit 'sad path for invalid Threshold filled in' do
         visit new_merchant_bulk_discount_path(@merch1.id)
 
         fill_in "Enter Bulk Discount Name", with: "New Discount"
@@ -118,7 +118,7 @@ RSpec.describe 'Merchant Items Index Page: ' do
         expect(page).to have_content("Please Create Bulk Discount with valid information")
       end
 
-      it 'sad path for invalid Threshold filled in' do
+      xit 'sad path for invalid Threshold filled in' do
         visit new_merchant_bulk_discount_path(@merch1.id)
 
         fill_in "Enter Bulk Discount Name", with: "New Discount"
