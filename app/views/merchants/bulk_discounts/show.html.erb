@@ -1,0 +1,17 @@
+<%= render partial: '/merchants/merchants-nav', locals: {merchant: @merchant} %>
+
+<h2 class="subtitle">Bulk Discount Information Page</h2>
+
+<div class="inv_info"><strong><%= @bulk_discount.name %>:</strong></div>
+  <table class="invoice_items" id="merchant_bulk_discount">
+    <tr>
+      <th>Discount Threshold</th>
+      <th>Discount Percentage</th>
+    </tr>
+
+    <tr id="bulk_discount_<%= @bulk_discount.id %>">
+      <td><%= @bulk_discount.threshold %></td>
+      <td><%= @bulk_discount.percentage %></td>
+    </tr>
+  </table>
+</div>
