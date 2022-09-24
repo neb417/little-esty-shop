@@ -74,7 +74,6 @@ RSpec.describe 'Merchant New Item page' do
         click_button 'Submit'
 
         expect(page).to have_content("Entry is invalid. Please fill in all entries with valid information.")
-        # expect(error).to match[/Entry is invalid. Please fill in all entries with valid information*/]
       end
 
       it 'has sad path for description' do
