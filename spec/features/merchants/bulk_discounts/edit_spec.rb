@@ -77,20 +77,44 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
       it 'show page reflects name change made' do
         visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        fill_in 'Update Bulk Discount Name', with: 'New Name'
+
+        click_button 'Save'
+
+        expect(page).to have_content("Successful Update of Bulk Disscount")
+        expect(page).to have_content("New Name")
       end
 
       it 'show page reflects threshold change made' do
         visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        fill_in 'Update Bulk Discount Threshold', with: 57
+
+        click_button 'Save'
+
+        expect(page).to have_content("Successful Update of Bulk Disscount")
+        within("#merchant_bulk_discount") do
+          expect(page).to have_content(57)
+        end
       end
 
       it 'show page reflects percentage change made' do
         visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        fill_in 'Update Bulk Discount Percentage', with: 25
+
+        click_button 'Save'
+
+        expect(page).to have_content("Successful Update of Bulk Disscount")
+        within("#merchant_bulk_discount") do
+          expect(page).to have_content(25)
+        end
       end
 
       it 'sad path reflects invalid Name entry' do
         visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
 
-        
         fill_in 'Update Bulk Discount Name', with: ''
 
         click_button 'Save'
@@ -100,7 +124,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
       it 'sad path reflects invalid Threshold entry' do
         visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
-        
+
         fill_in 'Update Bulk Discount Threshold', with: 'Number'
 
         click_button 'Save'
