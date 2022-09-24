@@ -2,7 +2,9 @@
 
 <h2 class="subtitle">Bulk Discount Information Page</h2>
 
-<li class="index_invoice" id="bulk_discount_<%= @bulk_discount.id %>"> <%= link_to "Edit #{@bulk_discount.name}", edit_merchant_bulk_discount_path(@merchant.id, @bulk_discount.id) %></li>
+<div class="index_invoice" id="bulk_discount_<%= @bulk_discount.id %>"> 
+  <%= link_to "Edit #{@bulk_discount.name}", edit_merchant_bulk_discount_path(@merchant.id, @bulk_discount.id) %>
+</div>
 
 <div class="inv_info"><strong><%= @bulk_discount.name %>:</strong></div>
   <table class="invoice_items" id="merchant_bulk_discount">
