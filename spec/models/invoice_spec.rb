@@ -137,7 +137,7 @@ RSpec.describe Invoice, type: :model do
       expect(@invoice_1.total_revenue).to eq(100)
     end
 
-  describe '#discount_revenue' do
+  describe 'discount methods' do
     before(:each) do
       @merchant_1 = create(:merchant)
       @item_1 = create(:item, merchant: @merchant_1)
@@ -156,11 +156,12 @@ RSpec.describe Invoice, type: :model do
       @disc3 = create(:bulk_discount, percentage: 15, threshold: 30, merchant_id: @merchant_2.id)
     end
 
-    it '#discount_revenue' do
+    it '.discount_revenue' do
       expect(@invoice_1.discount_revenue(@merchant_1)).to eq(27650.0)
+      expect(@invoice_1.discount_revenue).to eq(28450.0)
     end
 
-    it '#discount' do
+    it '.discount' do
       expect(@invoice_1.discount(@merchant_1)).to eq(5850.0)
     end
 
@@ -170,8 +171,8 @@ RSpec.describe Invoice, type: :model do
       expect(@invoice_1.discount_revenue(@merchant_2)).to eq(@inv_item_3.quantity * @inv_item_3.unit_price)
     end
 
-    # it 'applies correct discount' do
-    #   expect(@invoice_1.discount(@merchant_1)).to eq(5850.0)
-    # end
+    it '.admin_invoice_discount' do
+      expect(@invoice_1.admin_invoice_discount).to eq(5850.0)
+    end
   end
 end

@@ -1,4 +1,4 @@
-<h1>Invoice #<%= @invoice.id %></h1>
+<h2 class="subtitle">Invoice #<%= @invoice.id %></h2>
 <div id="status-update-<%= @invoice.id %>">
   <strong>Status: </strong>
   <%= form_with model: [:admin, @invoice], local: true do |f| %>
@@ -8,10 +8,14 @@
 </div>
 <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></p>
 <p>Total Revenue: <%= price_convert(@invoice.total_revenue) %></p>
+<p>Total Revenue with Bulk Discounts: <%= price_convert(@invoice.discount_revenue) %></p>
 <p><strong>Items on Invoice:</strong></p>
 <table class="invoice_items">
   <tr>
-  <th>Item</th><th>Quantity Sold</th><th>Price Sold</th><th>Item Status</th>
+  <th>Item</th>
+  <th>Quantity Sold</th>
+  <th>Price Sold</th>
+  <th>Item Status</th>
   </tr>
   <% @invoice.invoice_items.each do |invoice| %>
     <tr>

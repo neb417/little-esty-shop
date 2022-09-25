@@ -28,7 +28,7 @@
         </td>
         <td>
           <% if invoice_item.applied_discount %>
-            <%= link_to invoice_item.applied_discount.name, merchant_bulk_discount_path(@merchant.id,  invoice_item.applied_discount.id) %>
+            <%= link_to invoice_item.applied_discount.name, merchant_bulk_discount_path(@merchant.id, invoice_item.applied_discount.id) %>
           <% else %>
             <%= 'None' %>
           <% end %>
