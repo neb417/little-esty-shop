@@ -98,6 +98,7 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
       within("tr#invoice_item_#{@inv_item_4.id}") do
         expect(page).to_not have_link(@disc1.name)
         expect(page).to_not have_link(@disc2.name)
+        expect(page).to have_content('None')
       end
     end
 
