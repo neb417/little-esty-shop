@@ -13,6 +13,7 @@
       <th>Quantity</th>
       <th>Unit Price</th>
       <th>Status</th>
+      <th>Bulk Discount Applied</th>
     </tr>
     <% @invoice_items.each do |invoice_item| %>
       <tr id="invoice_item_<%= invoice_item.id %>">
@@ -24,6 +25,13 @@
             <%= f.select :status, [["Pending", :pending], ["Packaged", :packaged], ["Shipped", :shipped]] %>
             <%= f.submit "Update Status" %>
           <% end %>   
+        </td>
+        <td>
+          <% if invoice_item.applied_discount %>
+            <%= link_to invoice_item.applied_discount.name, merchant_bulk_discount_path(@merchant.id,  invoice_item.applied_discount.id) %>
+          <% else %>
+            <%= '' %>
+          <% end %>
         </td>
       </tr>
     <% end %>
