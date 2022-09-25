@@ -29,28 +29,14 @@ class Invoice < ApplicationRecord
     invoice_items.sum("unit_price * quantity")
   end
 
-  def discount_revenue(merchant = nil)
-    if merchant == nil
-      invoice_items.total_revenue - admin_invoice_discount
-    else
-      merchant.invoice_items.total_revenue - discount(merchant)
-    end
+  def discount_revenue(invoice_items)
+    invoice_items.total_revenue - discount(invoice_items)
   end
 
-  def discount(merchant)
-    discount = 0.0
-    merchant.invoice_items.each do |item|
-      if !item.applied_discount.nil?
-        discount += item.apply_discount_revenue
-      end
-    end
-    discount
-  end
-
-  def admin_invoice_discount
+  def discount(invoice_items)
     discount = 0.0
     invoice_items.each do |item|
-      if !item.applied_discount.nil?
+      unless item.applied_discount.nil?
         discount += item.apply_discount_revenue
       end
     end

@@ -6,13 +6,14 @@ class Admin::InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
+    @invoice_items = @invoice.invoice_items
   end
 
   def update
     @invoice = Invoice.find(params[:id])
     if @invoice.update(invoice_params)
       flash[:success] = "Invoice #{@invoice.id} status successfully updated."
-      render :show
+      redirect_to admin_invoice_path(@invoice.id)
     end
   end
 

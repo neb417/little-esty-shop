@@ -157,22 +157,18 @@ RSpec.describe Invoice, type: :model do
     end
 
     it '.discount_revenue' do
-      expect(@invoice_1.discount_revenue(@merchant_1)).to eq(27650.0)
-      expect(@invoice_1.discount_revenue).to eq(28450.0)
+      expect(@invoice_1.discount_revenue(@merchant_1.invoice_items)).to eq(27650.0)
+      expect(@invoice_1.discount_revenue(@invoice_1.invoice_items)).to eq(28450.0)
     end
 
     it '.discount' do
-      expect(@invoice_1.discount(@merchant_1)).to eq(5850.0)
+      expect(@invoice_1.discount(@merchant_1.invoice_items)).to eq(5850.0)
     end
 
     it 'does not apply a discount if not qualified' do
-      expect(@invoice_1.discount_revenue(@merchant_2)).to eq(800.0)
-      expect(@invoice_1.discount(@merchant_2)).to eq(0.0)
-      expect(@invoice_1.discount_revenue(@merchant_2)).to eq(@inv_item_3.quantity * @inv_item_3.unit_price)
-    end
-
-    it '.admin_invoice_discount' do
-      expect(@invoice_1.admin_invoice_discount).to eq(5850.0)
+      expect(@invoice_1.discount_revenue(@merchant_2.invoice_items)).to eq(800.0)
+      expect(@invoice_1.discount(@merchant_2.invoice_items)).to eq(0.0)
+      expect(@invoice_1.discount_revenue(@merchant_2.invoice_items)).to eq(@inv_item_3.quantity * @inv_item_3.unit_price)
     end
   end
 end
