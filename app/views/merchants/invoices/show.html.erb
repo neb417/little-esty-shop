@@ -5,6 +5,7 @@
   <div class="inv_info"><strong>Created On:</strong> <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></div>
   <div class="inv_info"><strong>Customer:</strong> <%= "#{@customer.first_name} #{@customer.last_name}" %></div>
   <div class="inv_info"><strong>Total Revenue:</strong> <%= price_convert(@invoice_items.total_revenue) %></div>
+  <div class="inv_info"><strong>Total Revenue with Bulk Discount:</strong> <%= price_convert(@invoice.discount_revenue(@merchant)) %></div>
   <div class="inv_info"><strong>Items on this Invoice:</strong></div>
   <table class="invoice_items" id="merchant_invoice_items">
     <tr>

@@ -11,9 +11,13 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     @item_3 = create(:item, merchant: @merchant_2)
 
     @invoice_1 = create(:invoice, status: :in_progress)
-    @inv_item_1 = create(:invoice_item, invoice: @invoice_1, item: @item_1, status: :packaged)
-    @inv_item_2 = create(:invoice_item, invoice: @invoice_1, item: @item_2, status: :packaged)
-    @inv_item_3 = create(:invoice_item, invoice: @invoice_1, item: @item_3)
+    @inv_item_1 = create(:invoice_item, invoice: @invoice_1, item: @item_1, quantity: 17, unit_price: 500, status: :packaged)
+    @inv_item_2 = create(:invoice_item, invoice: @invoice_1, item: @item_2, quantity: 25, unit_price: 1000, status: :packaged)
+    @inv_item_3 = create(:invoice_item, invoice: @invoice_1, item: @item_3, quantity: 8, unit_price: 100)
+
+    @disc1 = create(:bulk_discount, percentage: 10, threshold: 15, merchant_id: @merchant_1.id)
+    @disc2 = create(:bulk_discount, percentage: 20, threshold: 25, merchant_id: @merchant_1.id)
+    @disc3 = create(:bulk_discount, percentage: 15, threshold: 30, merchant_id: @merchant_2.id)
 
     visit merchant_invoice_path(@merchant_1.id, @invoice_1.id)
   end
@@ -54,14 +58,14 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     within("tr#invoice_item_#{@inv_item_1.id}") do
       select "Shipped", from: "invoice_item_status"
       click_button "Update Status"
-      
+
       expect(current_path).to eq(merchant_invoice_path(@merchant_1.id, @invoice_1.id))
       expect(@inv_item_1.reload.status).to eq("shipped")
     end
     within("tr#invoice_item_#{@inv_item_2.id}") do
       select "Pending", from: "invoice_item_status"
       click_button "Update Status"
-      
+
       expect(current_path).to eq(merchant_invoice_path(@merchant_1.id, @invoice_1.id))
       expect(@inv_item_2.reload.status).to eq("pending")
     end
@@ -70,5 +74,15 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
   it 'lists the total revenue for the merchants items on the invoice' do
     integer_total_revenue = @invoice_1.merchant_items(@merchant_1).total_revenue
     expect(page).to have_content("Total Revenue: #{price_convert(integer_total_revenue)}")
+  end
+
+  describe 'total discounted revenue for my merchant' do
+    it 'includes bulk discounts in the calculation' do
+      expect(page).to have_content("Total Revenue with Bulk Discount")
+    end
+
+    it 'includes bulk discounts in the calculation' do
+      expect(page).to have_content("Total Revenue with Bulk Discount: $276.50")
+    end
   end
 end

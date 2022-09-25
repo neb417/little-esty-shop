@@ -8,6 +8,8 @@ RSpec.describe Invoice, type: :model do
     it {should have_many(:invoice_items)}
     it {should have_many(:transactions)}
     it {should have_many(:items).through(:invoice_items)}
+    it {should have_many(:merchants).through(:items)}
+    it {should have_many(:bulk_discounts).through(:merchants)}
 
   end
 
@@ -120,18 +122,56 @@ RSpec.describe Invoice, type: :model do
         expect(merchant_2_items.pluck(:unit_price)).to eq([9950, 450])
       end
     end
+  end
 
-    describe '.total_revenue'
-      it "returs the total_revenue" do
-        @merchant1 = Merchant.create!(name: 'Hair Care')
-        @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant1.id, status: 1)
-        @item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: @merchant1.id)
-        @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
-        @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
-        @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 9, unit_price: 10, status: 2)
-        @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 1, unit_price: 10, status: 1)
+  describe '.total_revenue'
+    it "returs the total_revenue" do
+      @merchant1 = Merchant.create!(name: 'Hair Care')
+      @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant1.id, status: 1)
+      @item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: @merchant1.id)
+      @customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+      @invoice_1 = Invoice.create!(customer_id: @customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+      @ii_1 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_1.id, quantity: 9, unit_price: 10, status: 2)
+      @ii_11 = InvoiceItem.create!(invoice_id: @invoice_1.id, item_id: @item_8.id, quantity: 1, unit_price: 10, status: 1)
 
-        expect(@invoice_1.total_revenue).to eq(100)
-      end
+      expect(@invoice_1.total_revenue).to eq(100)
+    end
+
+  describe '#discount_revenue' do
+    before(:each) do
+      @merchant_1 = create(:merchant)
+      @item_1 = create(:item, merchant: @merchant_1)
+      @item_2 = create(:item, merchant: @merchant_1)
+
+      @merchant_2 = create(:merchant)
+      @item_3 = create(:item, merchant: @merchant_2)
+
+      @invoice_1 = create(:invoice, status: :in_progress)
+      @inv_item_1 = create(:invoice_item, invoice: @invoice_1, item: @item_1, quantity: 17, unit_price: 500, status: :packaged)
+      @inv_item_2 = create(:invoice_item, invoice: @invoice_1, item: @item_2, quantity: 25, unit_price: 1000, status: :packaged)
+      @inv_item_3 = create(:invoice_item, invoice: @invoice_1, item: @item_3, quantity: 8, unit_price: 100)
+
+      @disc1 = create(:bulk_discount, percentage: 10, threshold: 15, merchant_id: @merchant_1.id)
+      @disc2 = create(:bulk_discount, percentage: 20, threshold: 25, merchant_id: @merchant_1.id)
+      @disc3 = create(:bulk_discount, percentage: 15, threshold: 30, merchant_id: @merchant_2.id)
+    end
+
+    it '#discount_revenue' do
+      expect(@invoice_1.discount_revenue(@merchant_1)).to eq(27650.0)
+    end
+
+    it '#discount' do
+      expect(@invoice_1.discount(@merchant_1)).to eq(5850.0)
+    end
+
+    it 'does not apply a discount if not qualified' do
+      expect(@invoice_1.discount_revenue(@merchant_2)).to eq(800.0)
+      expect(@invoice_1.discount(@merchant_2)).to eq(0.0)
+      expect(@invoice_1.discount_revenue(@merchant_2)).to eq(@inv_item_3.quantity * @inv_item_3.unit_price)
+    end
+
+    # it 'applies correct discount' do
+    #   expect(@invoice_1.discount(@merchant_1)).to eq(5850.0)
+    # end
   end
 end
