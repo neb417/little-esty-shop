@@ -53,6 +53,7 @@ RSpec.describe 'Admin Invoices Show Page' do
       within("#status-update-#{@invoice_1.id}") do
         select('Cancelled', :from => 'invoice[status]')
         expect(page).to have_button('Update Invoice')
+
         click_button 'Update Invoice'
   
         expect(current_path).to eq(admin_invoice_path(@invoice_1))
