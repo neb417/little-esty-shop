@@ -6,6 +6,7 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     @merchant_1 = create(:merchant)
     @item_1 = create(:item, merchant: @merchant_1)
     @item_2 = create(:item, merchant: @merchant_1)
+    @item_4 = create(:item, merchant: @merchant_1)
 
     @merchant_2 = create(:merchant)
     @item_3 = create(:item, merchant: @merchant_2)
@@ -14,6 +15,7 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     @inv_item_1 = create(:invoice_item, invoice: @invoice_1, item: @item_1, quantity: 17, unit_price: 500, status: :packaged)
     @inv_item_2 = create(:invoice_item, invoice: @invoice_1, item: @item_2, quantity: 25, unit_price: 1000, status: :packaged)
     @inv_item_3 = create(:invoice_item, invoice: @invoice_1, item: @item_3, quantity: 8, unit_price: 100)
+    @inv_item_4 = create(:invoice_item, invoice: @invoice_1, item: @item_4, quantity: 10, unit_price: 100)
 
     @disc1 = create(:bulk_discount, percentage: 10, threshold: 15, merchant_id: @merchant_1.id)
     @disc2 = create(:bulk_discount, percentage: 20, threshold: 25, merchant_id: @merchant_1.id)
@@ -50,7 +52,6 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     end
     within("table#merchant_invoice_items") do
       expect(page).to_not have_content(@item_3.name)
-      expect(page).to_not have_content(@inv_item_3.quantity)
     end
   end
 
@@ -82,7 +83,29 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     end
 
     it 'includes bulk discounts in the calculation' do
-      expect(page).to have_content("Total Revenue with Bulk Discount: $276.50")
+      expect(page).to have_content("Total Revenue with Bulk Discount: $286.50")
+    end
+
+    it 'has link to applied discount, if any' do
+      within("tr#invoice_item_#{@inv_item_1.id}") do
+        expect(page).to have_link(@disc1.name)
+      end
+
+      within("tr#invoice_item_#{@inv_item_2.id}") do
+        expect(page).to have_link(@disc2.name)
+      end
+
+      within("tr#invoice_item_#{@inv_item_4.id}") do
+        expect(page).to_not have_link(@disc1.name)
+        expect(page).to_not have_link(@disc2.name)
+        expect(page).to have_content('None')
+      end
+    end
+
+    it 'routes to bulk discount show page' do
+      click_link @disc1.name
+
+      expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1.id, @disc1.id))
     end
   end
 end
