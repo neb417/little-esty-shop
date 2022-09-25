@@ -13,7 +13,7 @@ RSpec.describe 'Merchant Invoice Show Page', type: :feature do
     @invoice_1 = create(:invoice, status: :in_progress)
     @inv_item_1 = create(:invoice_item, invoice: @invoice_1, item: @item_1, quantity: 17, unit_price: 500, status: :packaged)
     @inv_item_2 = create(:invoice_item, invoice: @invoice_1, item: @item_2, quantity: 25, unit_price: 1000, status: :packaged)
-    @inv_item_3 = create(:invoice_item, invoice: @invoice_1, item: @item_3)
+    @inv_item_3 = create(:invoice_item, invoice: @invoice_1, item: @item_3, quantity: 8, unit_price: 100)
 
     @disc1 = create(:bulk_discount, percentage: 10, threshold: 15, merchant_id: @merchant_1.id)
     @disc2 = create(:bulk_discount, percentage: 20, threshold: 25, merchant_id: @merchant_1.id)

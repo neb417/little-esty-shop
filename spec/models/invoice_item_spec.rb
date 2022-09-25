@@ -5,7 +5,9 @@ RSpec.describe InvoiceItem, type: :model do
 
     it {should belong_to(:item)}
     it {should belong_to(:invoice)}
-
+    it {should belong_to(:invoice)}
+    it {should have_one(:merchant).through (:item)}
+    it {should have_many(:bulk_discounts).through (:merchant)}
   end
 
   describe 'enums' do
@@ -35,6 +37,83 @@ RSpec.describe InvoiceItem, type: :model do
         invoice_item = create(:invoice_item)
 
         expect(invoice_item.invoice_date).to eq(invoice_item.invoice.created_at)
+      end
+    end
+
+    describe '.applied_discount' do
+      it '.applied_discount (ex. 1 & 2)' do
+        merchant_1 = create(:merchant)
+        item_1 = create(:item, merchant: merchant_1)
+        item_2 = create(:item, merchant: merchant_1)
+  
+        merchant_2 = create(:merchant)
+        item_3 = create(:item, merchant: merchant_2)
+  
+        invoice_1 = create(:invoice, status: :in_progress)
+        inv_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 17, unit_price: 500, status: :packaged)
+        inv_item_2 = create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 25, unit_price: 1000, status: :packaged)
+        inv_item_3 = create(:invoice_item, invoice: invoice_1, item: item_3, quantity: 14, unit_price: 100)
+
+        disc1 = create(:bulk_discount, percentage: 10, threshold: 15, merchant_id: merchant_1.id)
+        disc2 = create(:bulk_discount, percentage: 20, threshold: 25, merchant_id: merchant_1.id)
+        disc3 = create(:bulk_discount, percentage: 15, threshold: 30, merchant_id: merchant_2.id)
+
+        expect(inv_item_1.applied_discount).to eq(disc1)
+        expect(inv_item_2.applied_discount).to eq(disc2)
+        expect(inv_item_3.applied_discount).to eq(nil)
+      end
+
+      it '.applied_discount (ex. 3)' do
+        merchant_1 = create(:merchant)
+        item_1 = create(:item, merchant: merchant_1)
+        item_2 = create(:item, merchant: merchant_1)
+  
+        invoice_1 = create(:invoice, status: :in_progress)
+        inv_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 12, unit_price: 500, status: :packaged)
+        inv_item_2 = create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 15, unit_price: 1000, status: :packaged)
+
+        disc1 = create(:bulk_discount, percentage: 20, threshold: 10, merchant_id: merchant_1.id)
+        disc2 = create(:bulk_discount, percentage: 30, threshold: 15, merchant_id: merchant_1.id)
+
+        expect(inv_item_1.applied_discount).to eq(disc1)
+        expect(inv_item_2.applied_discount).to eq(disc2)
+      end
+
+      it '.applied_discount (ex. 4)' do
+        merchant_1 = create(:merchant)
+        item_1 = create(:item, merchant: merchant_1)
+        item_2 = create(:item, merchant: merchant_1)
+  
+        invoice_1 = create(:invoice, status: :in_progress)
+        inv_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 12, unit_price: 500, status: :packaged)
+        inv_item_2 = create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 15, unit_price: 1000, status: :packaged)
+
+        disc1 = create(:bulk_discount, percentage: 20, threshold: 10, merchant_id: merchant_1.id)
+        disc2 = create(:bulk_discount, percentage: 15, threshold: 15, merchant_id: merchant_1.id)
+
+        expect(inv_item_1.applied_discount).to eq(disc1)
+        expect(inv_item_2.applied_discount).to eq(disc1)
+      end
+
+      it '.applied_discount (ex. 5)' do
+        merchant_1 = create(:merchant)
+        item_1 = create(:item, merchant: merchant_1)
+        item_2 = create(:item, merchant: merchant_1)
+  
+        merchant_2 = create(:merchant)
+        item_3 = create(:item, merchant: merchant_2)
+  
+        invoice_1 = create(:invoice, status: :in_progress)
+        inv_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 12, unit_price: 500, status: :packaged)
+        inv_item_2 = create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 15, unit_price: 1000, status: :packaged)
+        inv_item_3 = create(:invoice_item, invoice: invoice_1, item: item_3, quantity: 15, unit_price: 100)
+
+        disc1 = create(:bulk_discount, percentage: 20, threshold: 10, merchant_id: merchant_1.id)
+        disc2 = create(:bulk_discount, percentage: 30, threshold: 15, merchant_id: merchant_1.id)
+
+        expect(inv_item_1.applied_discount).to eq(disc1)
+        expect(inv_item_2.applied_discount).to eq(disc2)
+        expect(inv_item_3.applied_discount).to eq(nil)
       end
     end
   end
