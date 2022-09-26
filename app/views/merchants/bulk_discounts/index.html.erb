@@ -5,7 +5,7 @@
 
 <h2 class="subtitle">Bulk Discounts for <%= @merchant.name %></h2>
 
-<div class="index_column">
+<div class="index_invoice">
   <ul id="bulk_discount_list">
     <% @bulk_discounts.each do |discount| %>
       <li id="bulk_discount_<%= discount.id %>"> 
@@ -14,6 +14,7 @@
         <%= discount.threshold %> or more items are purchased.
         <%= link_to "Delete #{discount.name}","/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}", method: :delete %>
       </li>
+      <br>
     <% end %>
   </ul>
 </div>
