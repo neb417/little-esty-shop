@@ -3,11 +3,11 @@ require_relative '../poros/repo'
 
 class GitHubFacade
 
-  def self.generate_repo
-    name = GitHubService.repo[:name]
-    contributors = GitHubService.contributors.find_all.with_index{|user, i| [0,1,3,4].include?(i) }
-    team_members = contributors.map{|contributor| {login: contributor[:login], commits: contributor[:contributions]}}
-    pr = GitHubService.get_pulls[0][:number]
-    Repo.new(name, team_members, pr)
-  end
+  # def self.generate_repo
+  #   name = GitHubService.repo[:name]
+  #   contributors = GitHubService.contributors.find_all.with_index{|user, i| [0,1,3,4].include?(i) }
+  #   team_members = contributors.map{|contributor| {login: contributor[:login], commits: contributor[:contributions]}}
+  #   pr = GitHubService.get_pulls[0][:number]
+  #   Repo.new(name, team_members, pr)
+  # end
 end
