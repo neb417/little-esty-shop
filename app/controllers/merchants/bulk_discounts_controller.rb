@@ -16,9 +16,10 @@ class Merchants::BulkDiscountsController < ApplicationController
   end
 
   def create
-    params[:bulk_discount][:merchant_id] = params[:merchant_id]
+    params[:bulk_discount] [:merchant_id] = params[:merchant_id]
     @bulk_discount = BulkDiscount.new(bulk_params)
     @merchant = Merchant.find(params[:merchant_id])
+
     if @bulk_discount.save
       redirect_to merchant_bulk_discounts_path(params[:merchant_id])
       flash[:success] = "Your Bulk Discount has been Created."
@@ -52,7 +53,7 @@ class Merchants::BulkDiscountsController < ApplicationController
   end
 
   private
-  
+
   def bulk_params
     params.require(:bulk_discount).permit(
       :name,

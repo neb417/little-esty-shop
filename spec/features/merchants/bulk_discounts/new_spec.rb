@@ -136,6 +136,36 @@ RSpec.describe 'Merchant Bulk Dicount New Page: ' do
         expect(page).to have_content("Enter Bulk Discount Threshold")
         expect(page).to have_content("Enter Bulk Discount Percentage")
       end
+
+      it 'sad path for invalid percentage exceeding 100% filled in' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Name", with: "New Discount"
+        fill_in "Enter Bulk Discount Threshold", with: 50
+        fill_in "Enter Bulk Discount Percentage", with: 101
+
+        click_button "Create Bulk Discount"
+
+        expect(page).to have_content("Please Create Bulk Discount with valid information")
+        expect(page).to have_content("Enter Bulk Discount Name")
+        expect(page).to have_content("Enter Bulk Discount Threshold")
+        expect(page).to have_content("Enter Bulk Discount Percentage")
+      end
+
+      it 'sad path for invalid percentage less than 1% filled in' do
+        visit new_merchant_bulk_discount_path(@merch1.id)
+
+        fill_in "Enter Bulk Discount Name", with: "New Discount"
+        fill_in "Enter Bulk Discount Threshold", with: 50
+        fill_in "Enter Bulk Discount Percentage", with: 0
+
+        click_button "Create Bulk Discount"
+
+        expect(page).to have_content("Please Create Bulk Discount with valid information")
+        expect(page).to have_content("Enter Bulk Discount Name")
+        expect(page).to have_content("Enter Bulk Discount Threshold")
+        expect(page).to have_content("Enter Bulk Discount Percentage")
+      end
     end
   end
 end

@@ -8,7 +8,7 @@
 </div>
 <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></p>
 <p>Total Revenue: <%= price_convert(@invoice.total_revenue) %></p>
-<p>Total Revenue with Bulk Discounts: <%= price_convert(@invoice.discount_revenue(@invoice_items)) %></p>
+<p>Total Revenue with Bulk Discounts: <%= price_convert(@invoice.total_revenue - @invoice.apply_bulk_discount) %></p>
 <p><strong>Items on Invoice:</strong></p>
 <table class="invoice_items">
   <tr>
