@@ -1,5 +1,7 @@
 # Little Esty Shop
 
+![Screen Shot 2022-09-27 at 12 43 44 PM](https://user-images.githubusercontent.com/104036158/192639944-9de3a41d-f5ce-4259-a5a9-15086f1b0931.png)
+
 ## Background and Description
 
 "Little Esty Shop" is a group project that requires students to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.
