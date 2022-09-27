@@ -117,7 +117,7 @@ RSpec.describe 'admin dashboard' do
   end
 
   it 'has the creation date for the invoices' do
-    expect(page).to have_content("Date Created: #{@invoice2.created_at.strftime("%A, %B %-d, %Y")}")
+    expect(page).to have_content("Created: #{@invoice2.created_at.strftime("%A, %B %-d, %Y")}")
   end
 
   it 'is ordered with the oldest first' do
