@@ -5,7 +5,7 @@
   <div class="inv_info"><strong>Created On:</strong> <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></div>
   <div class="inv_info"><strong>Customer:</strong> <%= "#{@customer.first_name} #{@customer.last_name}" %></div>
   <div class="inv_info"><strong>Total Revenue:</strong> <%= price_convert(@invoice_items.total_revenue) %></div>
-  <div class="inv_info"><strong>Total Revenue with Bulk Discount:</strong> <%= price_convert(@invoice.discount_revenue(@invoice_items)) %></div>
+  <div class="inv_info"><strong>Total Revenue with Bulk Discount:</strong> <%= price_convert(@invoice_items.total_revenue - @invoice.apply_bulk_discount) %></div>
   <div class="inv_info"><strong>Items on this Invoice:</strong></div>
   <table class="invoice_items" id="merchant_invoice_items">
     <tr>
@@ -28,7 +28,7 @@
         </td>
         <td>
           <% if invoice_item.applied_discount %>
-            <%= link_to invoice_item.applied_discount.name, merchant_bulk_discount_path(@merchant.id, invoice_item.applied_discount.id) %>
+            <%= link_to invoice_item.applied_discount.nameg, merchant_bulk_discount_path(@merchant.id, invoice_item.applied_discount.id) %>
           <% else %>
             <%= 'None' %>
           <% end %>
