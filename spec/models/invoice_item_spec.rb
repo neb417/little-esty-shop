@@ -39,7 +39,7 @@ RSpec.describe InvoiceItem, type: :model do
     end
 
     describe '.applied_discount' do
-      it '.applied_discount (ex. 1 & 2)' do
+      it 'applies discount to appropriate merchant / does not apply when item not qualified' do
         merchant_1 = create(:merchant)
         item_1 = create(:item, merchant: merchant_1)
         item_2 = create(:item, merchant: merchant_1)
@@ -61,7 +61,7 @@ RSpec.describe InvoiceItem, type: :model do
         expect(inv_item_3.applied_discount).to eq(nil)
       end
 
-      it '.applied_discount (ex. 3)' do
+      it 'applies correct discount when qualified' do
         merchant_1 = create(:merchant)
         item_1 = create(:item, merchant: merchant_1)
         item_2 = create(:item, merchant: merchant_1)
@@ -77,7 +77,7 @@ RSpec.describe InvoiceItem, type: :model do
         expect(inv_item_2.applied_discount).to eq(disc2)
       end
 
-      it '.applied_discount (ex. 4)' do
+      it 'applies higher percentage discount' do
         merchant_1 = create(:merchant)
         item_1 = create(:item, merchant: merchant_1)
         item_2 = create(:item, merchant: merchant_1)
@@ -93,7 +93,7 @@ RSpec.describe InvoiceItem, type: :model do
         expect(inv_item_2.applied_discount).to eq(disc1)
       end
 
-      it '.applied_discount (ex. 5)' do
+      it 'applies the discount to only the vendor that discount qualifies' do
         merchant_1 = create(:merchant)
         item_1 = create(:item, merchant: merchant_1)
         item_2 = create(:item, merchant: merchant_1)
