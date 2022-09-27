@@ -1,10 +1,12 @@
 <%= render partial: '/merchants/merchants-nav', locals: {merchant: @merchant} %>
+<div class="bulk_disc_link">
+  <%= link_to "New Item", new_merchant_item_path(@merchant.id) %>
+</div>
+
 <h2 class="subtitle">My Items</h2>
 
 <div id="index_body">
   <div class="index_column">
-    <p><%= link_to "New Item", new_merchant_item_path(@merchant.id) %></p>
-
     <section id="enabled">
     <h3>Enabled Items</h3>
     <ul>
@@ -26,9 +28,9 @@
       <% @items.each do |item| %> 
         <% if item.status == false %>
           <div  id="item_<%= item.id %>">
-          <p><li class="list_item"><span class="item_link"><%= link_to "#{item.name}", merchant_item_path(@merchant.id, item.id) %></span>
+            <p><li class="list_item"><span class="item_link"><%= link_to "#{item.name}", merchant_item_path(@merchant.id, item.id) %></span>
                 <%= button_to "Enable", merchant_item_path(@merchant.id, item.id), method: :patch, params:[status: true]%>
-          </li></p>
+            </li></p>
           </div>
         <% end %>
       <% end %>

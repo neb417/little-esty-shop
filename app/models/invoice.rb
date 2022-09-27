@@ -21,7 +21,7 @@ class Invoice < ApplicationRecord
     joins(:invoice_items)
       .select('invoices.*')
       .where('invoice_items.status < ?', 2)
-      .order(created_at: :asc)
+      .order(:created_at)
       .distinct
   end
 
@@ -36,6 +36,5 @@ class Invoice < ApplicationRecord
       .select('invoice_items.id, max(invoice_items.quantity * invoice_items.unit_price * (bulk_discounts.percentage / 100.0)) as discount_applied')
       .group('invoice_items.id')
       .sum(& :discount_applied)
-      .to_f
   end
 end

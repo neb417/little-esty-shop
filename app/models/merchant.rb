@@ -28,7 +28,7 @@ class Merchant < ApplicationRecord
 
   def top_five_revenue
     items
-      .joins(invoice_items: [{invoice: :transactions}])
+      .joins(invoice_items: [invoice: :transactions])
       .select('items.*, invoice_items.item_id, sum(invoice_items.unit_price * invoice_items.quantity) AS item_revenue')
       .group('invoice_items.item_id, items.id')
       .where('transactions.result =?', 1)
@@ -39,15 +39,16 @@ class Merchant < ApplicationRecord
   def self.top_five_merchants
     joins(invoices: [:invoice_items, :transactions])
     .where('result = ?', 1)
-    .select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
+    .select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue')
     .group(:id).order('total_revenue desc').limit(5)
   end
 
   def top_day
-    invoices.select('invoices.created_at, sum(invoice_items.quantity * invoice_items.unit_price) as revenue')
-    .group('invoices.created_at')
-    .order('revenue desc')
-    .first
-    .created_at
+    invoices
+      .select('invoices.created_at, sum(invoice_items.quantity * invoice_items.unit_price) as revenue')
+      .group('invoices.created_at')
+      .order('revenue desc')
+      .first
+      .created_at
   end
 end

@@ -1,4 +1,4 @@
-<h1><%=@merchant.name%> Edit Page</h1>
+<h2 class="subtitle"><%=@merchant.name%> Edit Page</h2>
 
 <%= form_with url: "/admin/merchants/#{@merchant.id}", method: :patch, local: true do |f| %>
   <%= f.label :name %>
