@@ -1,13 +1,13 @@
 class InvoiceItem < ApplicationRecord
-  belongs_to :invoice
   belongs_to :item
+  belongs_to :invoice
   has_one :merchant, through: :item
   has_many :bulk_discounts, through: :merchant
 
   enum status: [:pending, :packaged, :shipped]
 
   def self.total_revenue
-    sum("invoice_items.unit_price * invoice_items.quantity")
+    sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
   def item_name

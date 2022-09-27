@@ -148,7 +148,7 @@ RSpec.describe 'Admin Merchants Index' do
     expect(merchant_3.name).to appear_before(merchant_5.name)
     expect(merchant_5.name).to appear_before(merchant_4.name)
     expect(page).to_not have_content(merchant_6.name)
-    expect(page).to have_content("#{merchant_1.name} - $84")
+    expect(page).to have_content("#{merchant_1.name} - $0.84")
 
     click_link "#{merchant_3.name}"
 

@@ -138,6 +138,26 @@ RSpec.describe 'Merchant Bulk Discount Edit Page: ' do
 
         expect(page).to have_content("Please enter valid information to Update Bulk Discount")
       end
+
+      it 'sad path reflects invalid Percentage entry exceeding 100' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        fill_in 'Update Bulk Discount Percentage', with: 101
+
+        click_button 'Update Bulk Discount'
+
+        expect(page).to have_content("Please enter valid information to Update Bulk Discount")
+      end
+
+      it 'sad path reflects invalid Percentage entry less than 1' do
+        visit edit_merchant_bulk_discount_path(@merch2.id, @disc3.id)
+
+        fill_in 'Update Bulk Discount Percentage', with: 0
+
+        click_button 'Update Bulk Discount'
+
+        expect(page).to have_content("Please enter valid information to Update Bulk Discount")
+      end
     end
   end
 end

@@ -6,16 +6,8 @@ RSpec.describe BulkDiscount, type: :model do
   end
 
   describe 'validations' do
-    it 'validates name' do
-      should { validate_presence_of(:name) }
-    end
-
-    it 'validates threshold' do
-      should { validate_presence_of(:threshold) }
-    end
-
-    it 'validates percentage' do
-      should { validate_presence_of(:percentage) }
-    end
+    it { should validate_presence_of(:name) }
+    it { should validate_numericality_of(:threshold) }
+    it { should validate_numericality_of(:percentage) }
   end
 end
